@@ -13,7 +13,6 @@
     height: 100vh;
     height: 100dvh;
     overflow: hidden;
-    background: var(--theme-colors-background);
 }
 
 .windows,
@@ -44,6 +43,10 @@
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    background: var(--app-background);
+
+    /* Controls and hover rows use a faint tint instead of opaque boxes */
+    --theme-colors-surface: rgb(255 255 255 / 6%);
 }
 
 .full-screen-player-overlay {
