@@ -1,10 +1,6 @@
 import { useEffect, useRef } from 'react';
 
 import {
-    useIsRadioActive,
-    useRadioPlayer,
-} from '/@/renderer/features/radio/hooks/use-radio-player';
-import {
     useFullscreenAutoOpenTimeout,
     useFullScreenPlayerStore,
     usePlayerStatus,
@@ -20,18 +16,16 @@ const ACTIVITY_THROTTLE_MS = 1000;
 
 /**
  * Opens the fullscreen player after the configured number of minutes pass with no
- * user activity while a song (local or radio) is playing. Any user activity resets the
+ * user activity while a song is playing. Any user activity resets the
  * timer, and the feature is disabled entirely when no timeout is configured.
  */
 export const useFullscreenAutoOpen = () => {
     const timeoutMinutes = useFullscreenAutoOpenTimeout();
     const status = usePlayerStatus();
-    const isRadioActive = useIsRadioActive();
-    const { isPlaying: isRadioPlaying } = useRadioPlayer();
     const { expanded } = useFullScreenPlayerStore();
     const setFullScreenPlayerStore = useSetFullScreenPlayerStore();
 
-    const isPlaying = status === PlayerStatus.PLAYING || (isRadioActive && isRadioPlaying);
+    const isPlaying = status === PlayerStatus.PLAYING;
 
     const timerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
     const lastResetAtRef = useRef(0);

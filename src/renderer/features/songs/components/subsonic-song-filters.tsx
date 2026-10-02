@@ -4,11 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import { getItemImageUrl } from '/@/renderer/components/item-image/item-image';
 import { artistsQueries } from '/@/renderer/features/artists/api/artists-api';
-import { useGenreList } from '/@/renderer/features/genres/api/genres-api';
-import {
-    ArtistMultiSelectRow,
-    GenreMultiSelectRow,
-} from '/@/renderer/features/shared/components/multi-select-rows';
+import { ArtistMultiSelectRow } from '/@/renderer/features/shared/components/multi-select-rows';
 import { useSongListFilters } from '/@/renderer/features/songs/hooks/use-song-list-filters';
 import { useCurrentServerId } from '/@/renderer/store';
 import { Divider } from '/@/shared/components/divider/divider';
@@ -21,30 +17,12 @@ import { AlbumArtistListSort, LibraryItem, SortOrder } from '/@/shared/types/dom
 
 interface SubsonicSongFiltersProps {
     disableArtistFilter?: boolean;
-    disableGenreFilter?: boolean;
 }
 
-export const SubsonicSongFilters = ({
-    disableArtistFilter,
-    disableGenreFilter,
-}: SubsonicSongFiltersProps) => {
+export const SubsonicSongFilters = ({ disableArtistFilter }: SubsonicSongFiltersProps) => {
     const { t } = useTranslation();
     const serverId = useCurrentServerId();
-    const { query, setArtistIds, setFavorite, setGenreId } = useSongListFilters();
-
-    const genreListQuery = useGenreList();
-
-    const genreList = useMemo(() => {
-        if (!genreListQuery.data) return [];
-        return genreListQuery.data.items.map((genre) => ({
-            albumCount: genre.albumCount,
-            label: genre.name,
-            songCount: genre.songCount,
-            value: genre.id,
-        }));
-    }, [genreListQuery.data]);
-
-    const selectedGenreIds = useMemo(() => query.genreIds || [], [query.genreIds]);
+    const { query, setArtistIds, setFavorite } = useSongListFilters();
 
     const albumArtistListQuery = useSuspenseQuery(
         artistsQueries.albumArtistList({
@@ -85,12 +63,8 @@ export const SubsonicSongFilters = ({
 
     const hasFavorite = query.favorite === true;
     const hasArtist = query.artistIds && query.artistIds.length > 0;
-    const hasGenre = query.genreIds && query.genreIds.length > 0;
-
-    const isFavoriteDisabled = hasArtist || hasGenre;
-    const isArtistDisabled = hasFavorite || hasGenre;
-    const isGenreDisabled = hasFavorite || hasArtist;
-
+    const isFavoriteDisabled = hasArtist;
+    const isArtistDisabled = hasFavorite;
     const handleArtistFilter = useCallback(
         (e: null | string[]) => {
             if (isArtistDisabled && e !== null) return;
@@ -103,26 +77,6 @@ export const SubsonicSongFilters = ({
         return (
             <Text fw={500} size="sm">
                 {t('entity.artist', { count: 2 })}
-            </Text>
-        );
-    }, [t]);
-
-    const handleGenresFilter = useCallback(
-        (e: null | string[]) => {
-            if (isGenreDisabled && e !== null && e.length > 0) return;
-            if (e && e.length > 0) {
-                setGenreId([e[0]]);
-            } else {
-                setGenreId(null);
-            }
-        },
-        [isGenreDisabled, setGenreId],
-    );
-
-    const genreFilterLabel = useMemo(() => {
-        return (
-            <Text fw={500} size="sm">
-                {t('entity.genre', { count: 1 })}
             </Text>
         );
     }, [t]);
@@ -168,23 +122,6 @@ export const SubsonicSongFilters = ({
                         RowComponent={ArtistMultiSelectRow}
                         singleSelect={true}
                         value={selectedArtistIds}
-                    />
-                </>
-            )}
-            {!disableGenreFilter && (
-                <>
-                    <Divider my="md" />
-                    <VirtualMultiSelect
-                        disabled={isGenreDisabled}
-                        displayCountType="song"
-                        height={220}
-                        isLoading={genreListQuery.isFetching}
-                        label={genreFilterLabel}
-                        onChange={handleGenresFilter}
-                        options={genreList}
-                        RowComponent={GenreMultiSelectRow}
-                        singleSelect={true}
-                        value={selectedGenreIds}
                     />
                 </>
             )}

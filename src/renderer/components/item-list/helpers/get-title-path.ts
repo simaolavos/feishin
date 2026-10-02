@@ -11,8 +11,6 @@ export const getTitlePath = (itemType: LibraryItem, id: string) => {
             return generatePath(AppRoute.LIBRARY_ALBUM_ARTISTS_DETAIL, { albumArtistId: id });
         case LibraryItem.ARTIST:
             return generatePath(AppRoute.LIBRARY_ARTISTS_DETAIL, { artistId: id });
-        case LibraryItem.GENRE:
-            return generatePath(AppRoute.LIBRARY_GENRES_DETAIL, { genreId: id });
         case LibraryItem.PLAYLIST:
             return generatePath(AppRoute.PLAYLISTS_DETAIL_SONGS, { playlistId: id });
         default:

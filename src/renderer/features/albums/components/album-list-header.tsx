@@ -8,7 +8,6 @@ import { useListContext } from '/@/renderer/context/list-context';
 import { AlbumListHeaderFilters } from '/@/renderer/features/albums/components/album-list-header-filters';
 import { useAlbumListFilters } from '/@/renderer/features/albums/hooks/use-album-list-filters';
 import { artistsQueries } from '/@/renderer/features/artists/api/artists-api';
-import { useGenreList } from '/@/renderer/features/genres/api/genres-api';
 import { FilterBar } from '/@/renderer/features/shared/components/filter-bar';
 import { LibraryHeaderBar } from '/@/renderer/features/shared/components/library-header-bar';
 import { ListSearchInput } from '/@/renderer/features/shared/components/list-search-input';
@@ -64,26 +63,9 @@ const PageTitle = ({ title }: { title?: string }) => {
                     <AlbumArtistTitle />
                 </Suspense>
             );
-        case ItemListKey.GENRE_ALBUM:
-            return (
-                <Suspense fallback={<LibraryHeaderBar.Title>—</LibraryHeaderBar.Title>}>
-                    <GenreTitle />
-                </Suspense>
-            );
     }
 
     return <LibraryHeaderBar.Title>{pageTitle}</LibraryHeaderBar.Title>;
-};
-
-const GenreTitle = () => {
-    const { id } = useListContext();
-    const { data: genres } = useGenreList();
-
-    const name = useMemo(() => {
-        return genres?.items.find((g) => g.id === id)?.name || '—';
-    }, [id, genres]);
-
-    return <LibraryHeaderBar.Title>{name}</LibraryHeaderBar.Title>;
 };
 
 const AlbumArtistTitle = () => {

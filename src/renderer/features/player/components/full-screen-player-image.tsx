@@ -8,10 +8,6 @@ import styles from './full-screen-player-image.module.css';
 import { useItemImageUrl } from '/@/renderer/components/item-image/item-image';
 import { SharedFullscreenPlayerMetadata } from '/@/renderer/features/player/components/shared-full-screen-player-metadata';
 import {
-    useIsRadioActive,
-    useRadioPlayer,
-} from '/@/renderer/features/radio/hooks/use-radio-player';
-import {
     PlayerItem,
     useFullScreenPlayerStore,
     useGeneralSettings,
@@ -55,12 +51,10 @@ const MotionImage = motion.img;
 const ImageWithPlaceholder = ({
     className,
     explicit,
-    placeholderIcon = 'itemAlbum',
     ...props
 }: HTMLMotionProps<'img'> & {
     explicit?: boolean;
     placeholder?: string;
-    placeholderIcon?: 'itemAlbum' | 'radio';
 }) => {
     const nativeAspectRatio = useNativeAspectRatio();
     const useImageAspectRatio = useFullScreenPlayerStore((state) => state.useImageAspectRatio);
@@ -75,7 +69,7 @@ const ImageWithPlaceholder = ({
                     width: '100%',
                 }}
             >
-                <Icon color="muted" icon={placeholderIcon} size="25%" />
+                <Icon color="muted" icon="itemAlbum" size="25%" />
             </Center>
         );
     }
@@ -99,9 +93,6 @@ export const FullScreenPlayerImage = () => {
     const mainImageRef = useRef<HTMLImageElement | null>(null);
     const [imageContainerWidth, setImageContainerWidth] = useState<null | number>(null);
 
-    const isRadioActive = useIsRadioActive();
-    const { currentStationArt: currentRadioStationArt } = useRadioPlayer();
-
     const currentSong = usePlayerSong();
     const { nextSong } = usePlayerData();
     const { blurExplicitImages, playerItems } = useGeneralSettings();
@@ -118,13 +109,6 @@ export const FullScreenPlayerImage = () => {
         id: nextSong?.imageId || undefined,
         itemType: LibraryItem.SONG,
         serverId: nextSong?._serverId,
-        type: 'fullScreenPlayer',
-    });
-
-    const radioImage = useItemImageUrl({
-        id: currentRadioStationArt?.imageId || undefined,
-        itemType: LibraryItem.RADIO_STATION,
-        serverId: currentRadioStationArt?.serverId,
         type: 'fullScreenPlayer',
     });
 
@@ -218,11 +202,8 @@ export const FullScreenPlayerImage = () => {
         imageStateRef.current = imageState;
     }, [imageState]);
 
-    // Update images when song or size changes (skip when playing radio - no album art)
+    // Update images when song or size changes
     useEffect(() => {
-        if (isRadioActive) {
-            return;
-        }
         if (currentSong?._uniqueId === previousSongRef.current) {
             return;
         }
@@ -243,7 +224,6 @@ export const FullScreenPlayerImage = () => {
 
         previousSongRef.current = currentSong?._uniqueId;
     }, [
-        isRadioActive,
         currentSong?._uniqueId,
         currentImageUrl,
         nextSong?._uniqueId,
@@ -272,7 +252,7 @@ export const FullScreenPlayerImage = () => {
                 }}
             >
                 <AnimatePresence initial={false} mode="sync">
-                    {!isRadioActive && imageState.current === 0 && (
+                    {imageState.current === 0 && (
                         <ImageWithPlaceholder
                             animate="open"
                             className="full-screen-player-image"
@@ -288,7 +268,7 @@ export const FullScreenPlayerImage = () => {
                         />
                     )}
 
-                    {!isRadioActive && imageState.current === 1 && (
+                    {imageState.current === 1 && (
                         <ImageWithPlaceholder
                             animate="open"
                             className="full-screen-player-image"
@@ -300,22 +280,6 @@ export const FullScreenPlayerImage = () => {
                             key={`bottom-${currentSong?._uniqueId || 'none'}`}
                             placeholder="var(--theme-colors-foreground-muted)"
                             src={imageState.bottomImage || ''}
-                            variants={imageVariants}
-                        />
-                    )}
-
-                    {isRadioActive && (
-                        <ImageWithPlaceholder
-                            animate="open"
-                            className="full-screen-player-image"
-                            custom={{ isOpen: true }}
-                            draggable={false}
-                            exit="closed"
-                            initial="closed"
-                            key="radio"
-                            placeholder="var(--theme-colors-foreground-muted)"
-                            placeholderIcon="radio"
-                            src={radioImage || ''}
                             variants={imageVariants}
                         />
                     )}

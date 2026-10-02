@@ -476,11 +476,6 @@ const VisualizerSettingsSchema = z.object({
     type: z.enum(['audiomotionanalyzer', 'butterchurn']),
 });
 
-export enum HomeFeatureStyle {
-    MULTIPLE = 'multiple',
-    SINGLE = 'single',
-}
-
 export enum ShareExpirationUnit {
     DAY = 'day',
     HOUR = 'hour',
@@ -535,8 +530,6 @@ export const GeneralSettingsSchema = z.object({
     followSystemTheme: z.boolean(),
     fullscreenAutoOpenTimeout: z.number().min(0).max(120),
     genreTarget: GenreTargetSchema,
-    homeFeature: z.boolean(),
-    homeFeatureStyle: z.nativeEnum(HomeFeatureStyle),
     homeItems: z.array(SortableItemSchema(HomeItemSchema)),
     imagePlaceholderPriority: z.enum(IMAGE_PLACEHOLDER_PRIORITIES),
     imageRes: z.object({
@@ -975,7 +968,6 @@ export enum GenreTarget {
 }
 
 export enum HomeItem {
-    GENRES = 'genres',
     MOST_PLAYED = 'mostPlayed',
     PLAYLISTS = 'playlists',
     RANDOM = 'random',
@@ -1020,11 +1012,9 @@ export enum SidebarItem {
     COLLECTIONS = 'Collections',
     FAVORITES = 'Favorites',
     FOLDERS = 'Folders',
-    GENRES = 'Genres',
     HOME = 'Home',
     NOW_PLAYING = 'Now Playing',
     PLAYLISTS = 'Playlists',
-    RADIO = 'Radio',
     SEARCH = 'Search',
     SETTINGS = 'Settings',
     TRACKS = 'Tracks',
@@ -1208,12 +1198,6 @@ export const sidebarItems: SidebarItemType[] = [
     },
     {
         disabled: false,
-        id: 'Genres',
-        label: i18n.t('page.sidebar.genres'),
-        route: AppRoute.LIBRARY_GENRES,
-    },
-    {
-        disabled: false,
         id: 'Folders',
         label: i18n.t('page.sidebar.folders'),
         route: AppRoute.LIBRARY_FOLDERS,
@@ -1231,12 +1215,6 @@ export const sidebarItems: SidebarItemType[] = [
         route: '',
     },
     {
-        disabled: false,
-        id: 'Radio',
-        label: i18n.t('page.sidebar.radio'),
-        route: AppRoute.RADIO,
-    },
-    {
         disabled: true,
         id: 'Settings',
         label: i18n.t('page.sidebar.settings'),
@@ -1245,7 +1223,6 @@ export const sidebarItems: SidebarItemType[] = [
 ];
 
 const defaultHomeItemOrder: HomeItem[] = [
-    HomeItem.GENRES,
     HomeItem.RANDOM,
     HomeItem.RECENTLY_ADDED,
     HomeItem.RECENTLY_RELEASED,
@@ -1359,8 +1336,6 @@ const initialState: SettingsState = {
         followSystemTheme: false,
         fullscreenAutoOpenTimeout: 0,
         genreTarget: GenreTarget.TRACK,
-        homeFeature: true,
-        homeFeatureStyle: HomeFeatureStyle.SINGLE,
         homeItems,
         imagePlaceholderPriority: 'thumbhash',
         imageRes: {
@@ -2497,13 +2472,6 @@ export const useSettingsStore = createWithEqualityFn<SettingsSlice>()(
                     });
                 }
 
-                if (version <= 13) {
-                    state.general.homeItems.push({
-                        disabled: false,
-                        id: HomeItem.GENRES,
-                    });
-                }
-
                 if (version <= 14) {
                     // Add bitDepth and sampleRate columns to song lists
 
@@ -2533,15 +2501,6 @@ export const useSettingsStore = createWithEqualityFn<SettingsSlice>()(
                     state.lists['albumDetail']?.table.columns.push(...columns);
                     state.lists['fullscreen']?.table.columns.push(...columns);
                     state.lists['sidequeue']?.table.columns.push(...columns);
-                }
-
-                if (version <= 15) {
-                    state.general.sidebarItems.push({
-                        disabled: false,
-                        id: 'Radio',
-                        label: i18n.t('page.sidebar.radio'),
-                        route: AppRoute.RADIO,
-                    });
                 }
 
                 // Version 16 introduced a bug where the release channel may have been reset
@@ -2931,10 +2890,19 @@ export const useSettingsStore = createWithEqualityFn<SettingsSlice>()(
                     });
                 }
 
+                if (version < 35) {
+                    state.general.homeItems = state.general.homeItems.filter(
+                        (item: { id: string }) => item.id !== 'genres',
+                    );
+                    state.general.sidebarItems = state.general.sidebarItems.filter(
+                        (item: { id: string }) => item.id !== 'Genres' && item.id !== 'Radio',
+                    );
+                }
+
                 return persistedState;
             },
             name: 'store_settings',
-            version: 34,
+            version: 35,
         },
     ),
 );
@@ -3175,11 +3143,6 @@ export const useExternalLinks = () =>
         }),
         shallow,
     );
-
-export const useHomeFeature = () => useSettingsStore((state) => state.general.homeFeature, shallow);
-
-export const useHomeFeatureStyle = () =>
-    useSettingsStore((state) => state.general.homeFeatureStyle);
 
 export const useHomeItems = () => useSettingsStore((state) => state.general.homeItems, shallow);
 

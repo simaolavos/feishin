@@ -4,24 +4,13 @@ import { useTranslation } from 'react-i18next';
 import { useGridCarouselContainerQuery } from '/@/renderer/components/grid-carousel/grid-carousel-v2';
 import { NativeScrollArea } from '/@/renderer/components/native-scroll-area/native-scroll-area';
 import { AlbumInfiniteCarousel } from '/@/renderer/features/albums/components/album-infinite-carousel';
-import { AlbumInfiniteFeatureCarousel } from '/@/renderer/features/home/components/album-infinite-feature-carousel';
-import { AlbumInfiniteSingleFeatureCarousel } from '/@/renderer/features/home/components/album-infinite-single-feature-carousel';
-import { FeaturedGenres } from '/@/renderer/features/home/components/featured-genres';
 import { PlaylistInfiniteCarousel } from '/@/renderer/features/home/components/playlist-infinite-carousel';
 import { AnimatedPage } from '/@/renderer/features/shared/components/animated-page';
 import { LibraryContainer } from '/@/renderer/features/shared/components/library-container';
 import { LibraryHeaderBar } from '/@/renderer/features/shared/components/library-header-bar';
 import { PageErrorBoundary } from '/@/renderer/features/shared/components/page-error-boundary';
 import { SongInfiniteCarousel } from '/@/renderer/features/songs/components/song-infinite-carousel';
-import {
-    HomeFeatureStyle,
-    HomeItem,
-    useCurrentServer,
-    useHomeFeature,
-    useHomeFeatureStyle,
-    useHomeItems,
-    useWindowSettings,
-} from '/@/renderer/store';
+import { HomeItem, useCurrentServer, useHomeItems, useWindowSettings } from '/@/renderer/store';
 import { Spinner } from '/@/shared/components/spinner/spinner';
 import { Stack } from '/@/shared/components/stack/stack';
 import {
@@ -38,8 +27,6 @@ const HomeRoute = () => {
     const scrollAreaRef = useRef<HTMLDivElement>(null);
     const server = useCurrentServer();
     const { windowBarStyle } = useWindowSettings();
-    const homeFeature = useHomeFeature();
-    const homeFeatureStyle = useHomeFeatureStyle();
     const homeItems = useHomeItems();
     const containerQuery = useGridCarouselContainerQuery();
 
@@ -90,7 +77,7 @@ const HomeRoute = () => {
     const sortedItems = homeItems.filter((item) => !item.disabled);
 
     const sortedCarousel = sortedItems
-        .filter((item) => item.id !== HomeItem.GENRES && item.id !== HomeItem.PLAYLISTS)
+        .filter((item) => item.id !== HomeItem.PLAYLISTS)
         .map((item) => ({
             ...carousels[item.id],
             uniqueId: item.id,
@@ -118,17 +105,7 @@ const HomeRoute = () => {
                         px="2rem"
                         ref={containerQuery.ref}
                     >
-                        {homeFeature && homeFeatureStyle === HomeFeatureStyle.SINGLE && (
-                            <AlbumInfiniteSingleFeatureCarousel />
-                        )}
-                        {homeFeature && homeFeatureStyle === HomeFeatureStyle.MULTIPLE && (
-                            <AlbumInfiniteFeatureCarousel />
-                        )}
                         {sortedItems.map((item) => {
-                            if (item.id === HomeItem.GENRES) {
-                                return <FeaturedGenres key="featured-genres" />;
-                            }
-
                             if (item.id === HomeItem.PLAYLISTS) {
                                 return (
                                     <PlaylistInfiniteCarousel

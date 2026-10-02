@@ -9,7 +9,6 @@ import {
 } from '/@/renderer/store';
 
 const HOME_ITEMS: Array<[string, string]> = [
-    [HomeItem.GENRES, 'page.home.genres'],
     [HomeItem.RANDOM, 'page.home.explore'],
     [HomeItem.PLAYLISTS, 'page.home.playlists'],
     [HomeItem.RECENTLY_PLAYED, 'page.home.recentlyPlayed'],

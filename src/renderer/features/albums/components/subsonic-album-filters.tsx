@@ -1,15 +1,11 @@
-import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { ChangeEvent, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { getItemImageUrl } from '/@/renderer/components/item-image/item-image';
 import { useAlbumListFilters } from '/@/renderer/features/albums/hooks/use-album-list-filters';
 import { artistsQueries } from '/@/renderer/features/artists/api/artists-api';
-import { genresQueries } from '/@/renderer/features/genres/api/genres-api';
-import {
-    ArtistMultiSelectRow,
-    GenreMultiSelectRow,
-} from '/@/renderer/features/shared/components/multi-select-rows';
+import { ArtistMultiSelectRow } from '/@/renderer/features/shared/components/multi-select-rows';
 import { useCurrentServerId } from '/@/renderer/store';
 import { useAppStore, useAppStoreActions } from '/@/renderer/store/app.store';
 import { Divider } from '/@/shared/components/divider/divider';
@@ -21,28 +17,18 @@ import { Stack } from '/@/shared/components/stack/stack';
 import { Switch } from '/@/shared/components/switch/switch';
 import { Text } from '/@/shared/components/text/text';
 import { useDebouncedCallback } from '/@/shared/hooks/use-debounced-callback';
-import {
-    AlbumArtistListSort,
-    GenreListSort,
-    LibraryItem,
-    SortOrder,
-} from '/@/shared/types/domain-types';
+import { AlbumArtistListSort, LibraryItem, SortOrder } from '/@/shared/types/domain-types';
 
 interface SubsonicAlbumFiltersProps {
     disableArtistFilter?: boolean;
-    disableGenreFilter?: boolean;
 }
 
-export const SubsonicAlbumFilters = ({
-    disableArtistFilter,
-    disableGenreFilter,
-}: SubsonicAlbumFiltersProps) => {
+export const SubsonicAlbumFilters = ({ disableArtistFilter }: SubsonicAlbumFiltersProps) => {
     const { t } = useTranslation();
 
     const serverId = useCurrentServerId();
 
-    const { query, setAlbumArtist, setFavorite, setGenreId, setMaxYear, setMinYear } =
-        useAlbumListFilters();
+    const { query, setAlbumArtist, setFavorite, setMaxYear, setMinYear } = useAlbumListFilters();
 
     const albumArtistListQuery = useSuspenseQuery(
         artistsQueries.albumArtistList({
@@ -82,13 +68,11 @@ export const SubsonicAlbumFilters = ({
 
     const hasFavorite = query.favorite === true;
     const hasArtist = query.artistIds && query.artistIds.length > 0;
-    const hasGenre = query.genreIds && query.genreIds.length > 0;
     const hasYear = query.minYear !== undefined || query.maxYear !== undefined;
 
-    const isFavoriteDisabled = hasArtist || hasGenre || hasYear;
-    const isArtistDisabled = hasFavorite || hasGenre || hasYear;
-    const isGenreDisabled = hasFavorite || hasArtist || hasYear;
-    const isYearDisabled = hasFavorite || hasArtist || hasGenre;
+    const isFavoriteDisabled = hasArtist || hasYear;
+    const isArtistDisabled = hasFavorite || hasYear;
+    const isYearDisabled = hasFavorite || hasArtist;
 
     const handleAlbumArtistFilter = useCallback(
         (e: null | string[]) => {
@@ -97,53 +81,6 @@ export const SubsonicAlbumFilters = ({
         },
         [isArtistDisabled, setAlbumArtist],
     );
-
-    const genreListQuery = useQuery(
-        genresQueries.list({
-            options: {
-                gcTime: 1000 * 60 * 2,
-                staleTime: 1000 * 60 * 1,
-            },
-            query: {
-                sortBy: GenreListSort.NAME,
-                sortOrder: SortOrder.ASC,
-                startIndex: 0,
-            },
-            serverId,
-        }),
-    );
-
-    const genreList = useMemo(() => {
-        if (!genreListQuery?.data) return [];
-        return genreListQuery.data.items.map((genre) => ({
-            albumCount: genre.albumCount,
-            label: genre.name,
-            songCount: genre.songCount,
-            value: genre.id,
-        }));
-    }, [genreListQuery.data]);
-
-    const selectedGenreIds = useMemo(() => query.genreIds || [], [query.genreIds]);
-
-    const handleGenresFilter = useCallback(
-        (e: null | string[]) => {
-            if (isGenreDisabled && e !== null && e.length > 0) return; // Prevent setting if disabled
-            if (e && e.length > 0) {
-                setGenreId([e[0]]);
-            } else {
-                setGenreId(null);
-            }
-        },
-        [isGenreDisabled, setGenreId],
-    );
-
-    const genreFilterLabel = useMemo(() => {
-        return (
-            <Text fw={500} size="sm">
-                {t('entity.genre', { count: 1 })}
-            </Text>
-        );
-    }, [t]);
 
     const toggleFilters = useMemo(
         () => [
@@ -280,23 +217,6 @@ export const SubsonicAlbumFilters = ({
                         RowComponent={ArtistMultiSelectRow}
                         singleSelect={artistSelectMode === 'single'}
                         value={selectedArtistIds}
-                    />
-                </>
-            )}
-            {!disableGenreFilter && (
-                <>
-                    <Divider my="md" />
-                    <VirtualMultiSelect
-                        disabled={isGenreDisabled}
-                        displayCountType="album"
-                        height={220}
-                        isLoading={genreListQuery.isFetching}
-                        label={genreFilterLabel}
-                        onChange={handleGenresFilter}
-                        options={genreList}
-                        RowComponent={GenreMultiSelectRow}
-                        singleSelect={true}
-                        value={selectedGenreIds}
                     />
                 </>
             )}

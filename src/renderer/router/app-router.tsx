@@ -70,15 +70,7 @@ const DummyAlbumDetailRoute = lazy(
     () => import('/@/renderer/features/albums/routes/dummy-album-detail-route'),
 );
 
-const GenreListRoute = lazy(() => import('/@/renderer/features/genres/routes/genre-list-route'));
-
-const GenreDetailRoute = lazy(
-    () => import('/@/renderer/features/genres/routes/genre-detail-route'),
-);
-
 const FolderListRoute = lazy(() => import('/@/renderer/features/folders/routes/folder-list-route'));
-
-const RadioListRoute = lazy(() => import('/@/renderer/features/radio/routes/radio-list-route'));
 
 const SearchRoute = lazy(() => import('/@/renderer/features/search/routes/search-route'));
 
@@ -242,13 +234,6 @@ export const AppRouter = () => {
                                             element={<NowPlayingRoute />}
                                             path={AppRoute.NOW_PLAYING}
                                         />
-                                        <Route path={AppRoute.LIBRARY_GENRES}>
-                                            <Route element={<GenreListRoute />} index />
-                                            <Route
-                                                element={<GenreDetailRoute />}
-                                                path={AppRoute.LIBRARY_GENRES_DETAIL}
-                                            />
-                                        </Route>
                                         <Route
                                             element={<AlbumListRoute />}
                                             path={AppRoute.LIBRARY_ALBUMS}
@@ -300,7 +285,6 @@ export const AppRouter = () => {
                                             element={<PlaylistListRoute />}
                                             path={AppRoute.PLAYLISTS}
                                         />
-                                        <Route element={<RadioListRoute />} path={AppRoute.RADIO} />
                                         <Route
                                             element={<PlaylistDetailSongListRoute />}
                                             path={AppRoute.PLAYLISTS_DETAIL_SONGS}

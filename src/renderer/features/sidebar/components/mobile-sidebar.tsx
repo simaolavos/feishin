@@ -43,7 +43,6 @@ export const MobileSidebar = () => {
             Artists: t('page.sidebar.albumArtists'),
             'Artists-all': t('page.sidebar.artists'),
             Favorites: t('page.sidebar.favorites'),
-            Genres: t('page.sidebar.genres'),
             Home: t('page.sidebar.home'),
             'Now Playing': t('page.sidebar.nowPlaying'),
             Playlists: t('page.sidebar.playlists'),

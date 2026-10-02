@@ -43,7 +43,6 @@ import { usePlayButtonClick } from '/@/renderer/features/shared/hooks/use-play-b
 import { searchLibraryItems } from '/@/renderer/features/shared/utils';
 import { songsQueries } from '/@/renderer/features/songs/api/songs-api';
 import { useContainerQuery } from '/@/renderer/hooks';
-import { useGenreRoute } from '/@/renderer/hooks/use-genre-route';
 import { useHotkeys } from '/@/renderer/hooks/use-hotkeys';
 import { AppRoute } from '/@/renderer/router/routes';
 import {
@@ -71,6 +70,7 @@ import { DropdownMenu } from '/@/shared/components/dropdown-menu/dropdown-menu';
 import { Grid } from '/@/shared/components/grid/grid';
 import { Group } from '/@/shared/components/group/group';
 import { Icon } from '/@/shared/components/icon/icon';
+import { Pill } from '/@/shared/components/pill/pill';
 import { SegmentedControl } from '/@/shared/components/segmented-control/segmented-control';
 import { Skeleton } from '/@/shared/components/skeleton/skeleton';
 import { Spinner } from '/@/shared/components/spinner/spinner';
@@ -161,7 +161,6 @@ interface AlbumArtistMetadataGenresProps {
 
 const AlbumArtistMetadataGenres = ({ genres, order }: AlbumArtistMetadataGenresProps) => {
     const { t } = useTranslation();
-    const genrePath = useGenreRoute();
 
     if (!genres || genres.length === 0) return null;
 
@@ -175,23 +174,9 @@ const AlbumArtistMetadataGenres = ({ genres, order }: AlbumArtistMetadataGenresP
                 </Text>
                 <Group gap="sm">
                     {genres.map((genre) => (
-                        <Button
-                            component={Link}
-                            key={`genre-${genre.id}`}
-                            radius="md"
-                            size="compact-md"
-                            to={generatePath(genrePath, {
-                                albumArtistId: null,
-                                albumId: null,
-                                artistId: null,
-                                genreId: genre.id,
-                                itemType: null,
-                                playlistId: null,
-                            })}
-                            variant="outline"
-                        >
+                        <Pill key={`genre-${genre.id}`} size="md">
                             {genre.name}
-                        </Button>
+                        </Pill>
                     ))}
                 </Group>
             </Stack>

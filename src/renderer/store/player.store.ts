@@ -7,7 +7,6 @@ import { useShallow } from 'zustand/react/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
 
 import { eventEmitter } from '/@/renderer/events/event-emitter';
-import { useRadioStore as useRadioPlayerStore } from '/@/renderer/features/radio/hooks/use-radio-player';
 import { createSelectors } from '/@/renderer/lib/zustand';
 import { useSettingsStore } from '/@/renderer/store/settings.store';
 import {
@@ -225,21 +224,11 @@ function calculateNextIndex(
     }
 }
 
-function clearActiveRadio(): void {
-    const radioState = useRadioPlayerStore.getState();
-    if (radioState.currentStreamUrl) {
-        radioState.actions.clear();
-    }
-}
-
 function emitPlayerPlayEvent(
     targetSongUniqueId: string | undefined,
     set: (fn: (state: PlayerState) => void) => void,
     get: () => PlayerState,
 ): void {
-    // Clear radio before status changes so onPlayerStatus does not restart the stream.
-    clearActiveRadio();
-
     // If playSongId is provided, find the song and start playback on it
     if (targetSongUniqueId) {
         let playIndex: number | undefined;
@@ -515,8 +504,6 @@ export const usePlayerStoreBase = createWithEqualityFn<PlayerState>()(
                             break;
                         }
                         case Play.NOW: {
-                            clearActiveRadio();
-
                             set((state) => {
                                 newItems.forEach((item) => {
                                     state.queue.songs[item._uniqueId] = item;
@@ -571,8 +558,6 @@ export const usePlayerStoreBase = createWithEqualityFn<PlayerState>()(
                             break;
                         }
                         case Play.SHUFFLE: {
-                            clearActiveRadio();
-
                             set((state) => {
                                 newItems.forEach((item) => {
                                     state.queue.songs[item._uniqueId] = item;
@@ -678,8 +663,6 @@ export const usePlayerStoreBase = createWithEqualityFn<PlayerState>()(
 
                     // If playSongId is provided, find the song and start playback on it
                     if (targetSongUniqueId) {
-                        clearActiveRadio();
-
                         let playIndex: number | undefined;
                         set((state) => {
                             const queue = state.getQueue();
@@ -1138,11 +1121,6 @@ export const usePlayerStoreBase = createWithEqualityFn<PlayerState>()(
                 mediaPlay: (id?: string) => {
                     let playIndex: number | undefined;
 
-                    // Playing a specific queue song should dismiss radio first.
-                    if (id) {
-                        clearActiveRadio();
-                    }
-
                     set((state) => {
                         if (id) {
                             const queue = state.getQueue();
@@ -1189,8 +1167,6 @@ export const usePlayerStoreBase = createWithEqualityFn<PlayerState>()(
                 mediaPlayByIndex: (index: number) => {
                     let playIndex: number | undefined;
                     let songId: string | undefined;
-
-                    clearActiveRadio();
 
                     set((state) => {
                         const queue = state.getQueue();

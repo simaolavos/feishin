@@ -1,6 +1,5 @@
 import { TFunction } from 'i18next';
 import { Fragment, ReactNode } from 'react';
-import { generatePath, Link } from 'react-router';
 
 import styles from './album-group-header.module.css';
 
@@ -8,7 +7,6 @@ import {
     JOINED_ARTISTS_MUTED_PROPS,
     JoinedArtists,
 } from '/@/renderer/features/albums/components/joined-artists';
-import { AppRoute } from '/@/renderer/router/routes';
 import { AlbumGroupItem } from '/@/renderer/store';
 import { formatDurationString, formatPartialIsoDateUTC, formatSizeString } from '/@/renderer/utils';
 import { normalizeReleaseTypes } from '/@/renderer/utils/normalize-release-types';
@@ -126,17 +124,7 @@ export const renderAlbumGroupMetadataItem = (
                 <div className={styles.metadataRow}>
                     {metadata.genres.map((genre, index) => (
                         <Fragment key={genre.id}>
-                            <Text
-                                {...metadataTextProps}
-                                component={Link}
-                                isLink
-                                state={{ item: genre }}
-                                to={generatePath(AppRoute.LIBRARY_GENRES_DETAIL, {
-                                    genreId: genre.id,
-                                })}
-                            >
-                                {genre.name}
-                            </Text>
+                            <Text {...metadataTextProps}>{genre.name}</Text>
                             {index < metadata.genres.length - 1 && ', '}
                         </Fragment>
                     ))}

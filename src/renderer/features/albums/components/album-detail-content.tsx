@@ -6,7 +6,7 @@ import type {
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { ReactNode, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { generatePath, useParams } from 'react-router';
+import { useParams } from 'react-router';
 
 import styles from './album-detail-content.module.css';
 
@@ -285,15 +285,9 @@ const AlbumMetadataGenres = ({ genres }: AlbumMetadataGenresProps) => {
             </Text>
             <Pill.Group>
                 {genres.map((genre) => (
-                    <PillLink
-                        key={`genre-${genre.id}`}
-                        size="md"
-                        to={generatePath(AppRoute.LIBRARY_GENRES_DETAIL, {
-                            genreId: genre.id,
-                        })}
-                    >
+                    <Pill key={`genre-${genre.id}`} size="md">
                         {genre.name}
-                    </PillLink>
+                    </Pill>
                 ))}
             </Pill.Group>
         </Stack>

@@ -9,7 +9,6 @@ import {
     ExplicitStatus,
     Folder,
     Genre,
-    InternetRadioStation,
     LibraryItem,
     Playlist,
     RelatedArtist,
@@ -494,25 +493,11 @@ const normalizeFolder = (
     };
 };
 
-const normalizeInternetRadioStation = (
-    item: z.infer<typeof ssType._response.internetRadioStation>,
-): InternetRadioStation => {
-    return {
-        homepageUrl: item.homepageUrl || null,
-        id: item.id,
-        imageId: item.coverArt?.toString() || null,
-        imageUrl: null,
-        name: item.name,
-        streamUrl: item.streamUrl,
-    };
-};
-
 export const ssNormalize = {
     album: normalizeAlbum,
     albumArtist: normalizeAlbumArtist,
     folder: normalizeFolder,
     genre: normalizeGenre,
-    internetRadioStation: normalizeInternetRadioStation,
     playlist: normalizePlaylist,
     song: normalizeSong,
 };

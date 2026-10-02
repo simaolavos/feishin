@@ -7,8 +7,6 @@ import { getItemImageUrl } from '/@/renderer/components/item-image/item-image';
 import { albumQueries } from '/@/renderer/features/albums/api/album-api';
 import { usePlayer } from '/@/renderer/features/player/context/player-context';
 import { playlistsQueries } from '/@/renderer/features/playlists/api/playlists-api';
-import { radioQueries } from '/@/renderer/features/radio/api/radio-api';
-import { useRadioStore } from '/@/renderer/features/radio/hooks/use-radio-player';
 import { songsQueries } from '/@/renderer/features/songs/api/songs-api';
 import { queryClient } from '/@/renderer/lib/react-query';
 import { useArtistRadioCount } from '/@/renderer/store';
@@ -27,12 +25,7 @@ import {
     SongListSort,
     SortOrder,
 } from '/@/shared/types/domain-types';
-import {
-    RemoteAlbumItem,
-    RemotePlaylistItem,
-    RemoteRadioItem,
-    RemoteTrackItem,
-} from '/@/shared/types/remote-types';
+import { RemoteAlbumItem, RemotePlaylistItem, RemoteTrackItem } from '/@/shared/types/remote-types';
 import { Play } from '/@/shared/types/types';
 
 const remote = isElectron() ? window.api.remote : null;
@@ -265,42 +258,6 @@ export const useRemoteLibrary = () => {
             }
         });
 
-        remote.requestRadio(async ({ limit, requestId, searchTerm, startIndex }) => {
-            const server = useAuthStore.getState().currentServer;
-            if (!server) {
-                remote?.respondRadio(requestId, false, []);
-                return;
-            }
-
-            const pageSize = limit ?? DEFAULT_PAGE_SIZE;
-            try {
-                // getInternetRadioStations has no limit/startIndex/searchTerm
-                // of its own — internet radio lists aren't server-paginable
-                // (unlike songs/albums/playlists). React Query caches the
-                // full list for an hour (radio-api.ts), so slicing/filtering
-                // here per page is cheap rather than a real refetch each time.
-                const stations = await queryClient.fetchQuery(
-                    radioQueries.list({ query: undefined, serverId: server.id }),
-                );
-                const filtered = searchTerm
-                    ? stations.filter((station) =>
-                          station.name.toLowerCase().includes(searchTerm.toLowerCase()),
-                      )
-                    : stations;
-                const start = startIndex ?? 0;
-                const page = filtered.slice(start, start + pageSize);
-                const items: RemoteRadioItem[] = page.map((station) => ({
-                    homepageUrl: station.homepageUrl,
-                    id: station.id,
-                    imageUrl: station.imageUrl ?? null,
-                    name: station.name,
-                }));
-                remote?.respondRadio(requestId, start + pageSize < filtered.length, items);
-            } catch {
-                remote?.respondRadio(requestId, false, []);
-            }
-        });
-
         // Acks the phone's requestId (if it sent one — older/simpler
         // events like request-play-radio don't carry one) once this
         // operation has actually landed, success or failure — the phone
@@ -466,28 +423,6 @@ export const useRemoteLibrary = () => {
             moveSelectedTo([movedSong], edge, targetUniqueId);
         });
 
-        remote.requestPlayRadio(async ({ id }) => {
-            const server = useAuthStore.getState().currentServer;
-            if (!server) return;
-
-            try {
-                const stations = await queryClient.fetchQuery(
-                    radioQueries.list({ query: undefined, serverId: server.id }),
-                );
-                const station = stations.find((s) => s.id === id);
-                if (!station) return;
-
-                useRadioStore.getState().actions.play(station.streamUrl, station.name, {
-                    id: station.id,
-                    imageId: station.imageId,
-                    imageUrl: station.imageUrl,
-                    serverId: server.id,
-                });
-            } catch {
-                // Nothing to do — station list fetch failed, no station to play.
-            }
-        });
-
         remote.requestQueueJump(({ uniqueId }) => {
             usePlayerStoreBase.getState().mediaPlay(uniqueId);
         });
@@ -496,12 +431,10 @@ export const useRemoteLibrary = () => {
             ipc?.removeAllListeners('request-tracks');
             ipc?.removeAllListeners('request-albums');
             ipc?.removeAllListeners('request-playlists');
-            ipc?.removeAllListeners('request-radio');
             ipc?.removeAllListeners('request-play-track');
             ipc?.removeAllListeners('request-play-track-radio');
             ipc?.removeAllListeners('request-play-playlist');
             ipc?.removeAllListeners('request-play-album');
-            ipc?.removeAllListeners('request-play-radio');
             ipc?.removeAllListeners('request-add-to-playlist');
             ipc?.removeAllListeners('request-clear-queue');
             ipc?.removeAllListeners('request-remove-from-queue');

@@ -120,18 +120,7 @@ const FormatGenre = (item: Album | AlbumArtist | Playlist | Song) => {
     return item.genres?.map((genre, index) => (
         <span key={genre.id}>
             {index > 0 && <Separator />}
-            <Text
-                component={Link}
-                fw={600}
-                isLink
-                overflow="visible"
-                size="md"
-                to={
-                    genre.id
-                        ? generatePath(AppRoute.LIBRARY_GENRES_DETAIL, { genreId: genre.id })
-                        : ''
-                }
-            >
+            <Text fw={600} overflow="visible" size="md">
                 {genre.name || '—'}
             </Text>
         </span>

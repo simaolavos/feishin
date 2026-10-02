@@ -7,7 +7,6 @@ import { AlbumArtistContextMenu } from '/@/renderer/features/context-menu/menus/
 import { AlbumContextMenu } from '/@/renderer/features/context-menu/menus/album-context-menu';
 import { ArtistContextMenu } from '/@/renderer/features/context-menu/menus/artist-context-menu';
 import { FolderContextMenu } from '/@/renderer/features/context-menu/menus/folder-context-menu';
-import { GenreContextMenu } from '/@/renderer/features/context-menu/menus/genre-context-menu';
 import { PlaylistContextMenu } from '/@/renderer/features/context-menu/menus/playlist-context-menu';
 import { PlaylistSongContextMenu } from '/@/renderer/features/context-menu/menus/playlist-song-context-menu';
 import { QueueContextMenu } from '/@/renderer/features/context-menu/menus/queue-context-menu';
@@ -18,7 +17,6 @@ import {
     AlbumArtist,
     Artist,
     Folder,
-    Genre,
     LibraryItem,
     Playlist,
     QueueSong,
@@ -85,7 +83,6 @@ export const ContextMenuController = createCallable<ContextMenuControllerProps, 
                 {cmd.type === LibraryItem.ALBUM_ARTIST && <AlbumArtistContextMenu {...cmd} />}
                 {cmd.type === LibraryItem.ARTIST && <ArtistContextMenu {...cmd} />}
                 {cmd.type === LibraryItem.FOLDER && <FolderContextMenu {...cmd} />}
-                {cmd.type === LibraryItem.GENRE && <GenreContextMenu {...cmd} />}
                 {cmd.type === LibraryItem.PLAYLIST && <PlaylistContextMenu {...cmd} />}
                 {cmd.type === LibraryItem.PLAYLIST_SONG && <PlaylistSongContextMenu {...cmd} />}
                 {cmd.type === LibraryItem.SONG && <SongContextMenu {...cmd} />}
@@ -99,7 +96,6 @@ export type ContextMenuCommand =
     | AlbumContextMenuProps
     | ArtistContextMenuProps
     | FolderContextMenuProps
-    | GenreContextMenuProps
     | PlaylistContextMenuProps
     | PlaylistSongContextMenuProps
     | QueueSongContextMenuProps
@@ -123,11 +119,6 @@ type ArtistContextMenuProps = {
 type FolderContextMenuProps = {
     items: Folder[];
     type: LibraryItem.FOLDER;
-};
-
-type GenreContextMenuProps = {
-    items: Genre[];
-    type: LibraryItem.GENRE;
 };
 
 type PlaylistContextMenuProps = {

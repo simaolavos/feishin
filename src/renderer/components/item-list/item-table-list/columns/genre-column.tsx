@@ -1,6 +1,5 @@
 import clsx from 'clsx';
 import { Fragment, useMemo } from 'react';
-import { generatePath, Link } from 'react-router';
 
 import styles from './genre-column.module.css';
 
@@ -10,7 +9,6 @@ import {
     ItemTableListInnerColumn,
     TableColumnContainer,
 } from '/@/renderer/components/item-list/item-table-list/item-table-list-column';
-import { AppRoute } from '/@/renderer/router/routes';
 import { Text } from '/@/shared/components/text/text';
 import { Genre } from '/@/shared/types/domain-types';
 
@@ -20,12 +18,7 @@ const GenreColumn = (props: ItemTableListInnerColumn) => {
 
     const genres = useMemo(() => {
         if (!row) return [];
-        return row.map((genre) => {
-            const path = generatePath(AppRoute.LIBRARY_GENRES_DETAIL, {
-                genreId: genre.id,
-            });
-            return { ...genre, path };
-        });
+        return row;
     }, [row]);
 
     if (Array.isArray(row)) {
@@ -39,14 +32,7 @@ const GenreColumn = (props: ItemTableListInnerColumn) => {
                 >
                     {genres.map((genre, index) => (
                         <Fragment key={genre.id}>
-                            <Text
-                                component={Link}
-                                isLink
-                                isMuted
-                                isNoSelect
-                                state={{ item: genre }}
-                                to={genre.path}
-                            >
+                            <Text isMuted isNoSelect>
                                 {genre.name}
                             </Text>
                             {index < genres.length - 1 && ', '}

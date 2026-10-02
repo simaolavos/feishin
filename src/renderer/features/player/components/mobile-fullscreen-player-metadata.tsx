@@ -12,8 +12,6 @@ interface MobileFullscreenPlayerMetadataProps {
     currentSong?: QueueSong;
     onToggleFavorite: (e: MouseEvent<HTMLButtonElement>) => void;
     onUpdateRating: (rating: number) => void;
-    radioStationName?: string;
-    radioTitle?: string;
     showFavorite?: boolean;
     showRating?: boolean;
 }
@@ -23,13 +21,9 @@ export const MobileFullscreenPlayerMetadata = memo(
         currentSong,
         onToggleFavorite,
         onUpdateRating,
-        radioStationName,
-        radioTitle,
         showFavorite,
         showRating,
     }: MobileFullscreenPlayerMetadataProps) => {
-        const isRadio = radioTitle !== undefined || radioStationName !== undefined;
-
         const isFavorite = currentSong?.userFavorite;
         const rating = currentSong?.userRating;
 
@@ -37,7 +31,7 @@ export const MobileFullscreenPlayerMetadata = memo(
             <div className={styles.metadataContainer}>
                 <SharedFullscreenPlayerMetadata />
 
-                {!isRadio && (
+                {
                     <Group align="center" className={styles.actionsRow} gap="xs">
                         {showFavorite && (
                             <ActionIcon
@@ -55,7 +49,7 @@ export const MobileFullscreenPlayerMetadata = memo(
                             <Rating onChange={onUpdateRating} size="sm" value={rating || 0} />
                         )}
                     </Group>
-                )}
+                }
             </div>
         );
     },

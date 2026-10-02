@@ -238,18 +238,6 @@ export const controller = {
             server.type,
         )?.(addContext({ ...args, apiClientProps: { ...args.apiClientProps, server } }));
     },
-    createInternetRadioStation(args) {
-        const server = getServerById(args.apiClientProps.serverId);
-
-        if (!server) {
-            throw new Error(`${i18n.t('error.apiRouteError')}: createInternetRadioStation`);
-        }
-
-        return apiController(
-            'createInternetRadioStation',
-            server.type,
-        )?.(addContext({ ...args, apiClientProps: { ...args.apiClientProps, server } }));
-    },
     createPlaylist(args) {
         const server = getServerById(args.apiClientProps.serverId);
 
@@ -283,30 +271,6 @@ export const controller = {
 
         return apiController(
             'deleteFavorite',
-            server.type,
-        )?.(addContext({ ...args, apiClientProps: { ...args.apiClientProps, server } }));
-    },
-    deleteInternetRadioStation(args) {
-        const server = getServerById(args.apiClientProps.serverId);
-
-        if (!server) {
-            throw new Error(`${i18n.t('error.apiRouteError')}: deleteInternetRadioStation`);
-        }
-
-        return apiController(
-            'deleteInternetRadioStation',
-            server.type,
-        )?.(addContext({ ...args, apiClientProps: { ...args.apiClientProps, server } }));
-    },
-    deleteInternetRadioStationImage(args) {
-        const server = getServerById(args.apiClientProps.serverId);
-
-        if (!server) {
-            throw new Error(`${i18n.t('error.apiRouteError')}: deleteInternetRadioStationImage`);
-        }
-
-        return apiController(
-            'deleteInternetRadioStationImage',
             server.type,
         )?.(addContext({ ...args, apiClientProps: { ...args.apiClientProps, server } }));
     },
@@ -611,17 +575,6 @@ export const controller = {
                 }),
             ) || null
         );
-    },
-    getInternetRadioStations(args) {
-        const server = getServerById(args.apiClientProps.serverId);
-
-        if (!server) {
-            throw new Error(`${i18n.t('error.apiRouteError')}: getInternetRadioStations`);
-        }
-        return apiController(
-            'getInternetRadioStations',
-            server.type,
-        )?.(addContext({ ...args, apiClientProps: { ...args.apiClientProps, server } }));
     },
     getLyrics(args) {
         const server = getServerById(args.apiClientProps.serverId);
@@ -1061,18 +1014,6 @@ export const controller = {
             server.type,
         )?.(addContext({ ...args, apiClientProps: { ...args.apiClientProps, server } }));
     },
-    updateInternetRadioStation(args) {
-        const server = getServerById(args.apiClientProps.serverId);
-
-        if (!server) {
-            throw new Error(`${i18n.t('error.apiRouteError')}: updateInternetRadioStation`);
-        }
-
-        return apiController(
-            'updateInternetRadioStation',
-            server.type,
-        )?.(addContext({ ...args, apiClientProps: { ...args.apiClientProps, server } }));
-    },
     updatePlaylist(args) {
         const server = getServerById(args.apiClientProps.serverId);
 
@@ -1094,18 +1035,6 @@ export const controller = {
 
         return apiController(
             'uploadArtistImage',
-            server.type,
-        )?.(addContext({ ...args, apiClientProps: { ...args.apiClientProps, server } }));
-    },
-    uploadInternetRadioStationImage(args) {
-        const server = getServerById(args.apiClientProps.serverId);
-
-        if (!server) {
-            throw new Error(`${i18n.t('error.apiRouteError')}: uploadInternetRadioStationImage`);
-        }
-
-        return apiController(
-            'uploadInternetRadioStationImage',
             server.type,
         )?.(addContext({ ...args, apiClientProps: { ...args.apiClientProps, server } }));
     },

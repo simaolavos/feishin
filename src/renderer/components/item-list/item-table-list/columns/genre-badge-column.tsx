@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import { generatePath, Link } from 'react-router';
 
 import styles from './genre-badge-column.module.css';
 
@@ -9,7 +8,6 @@ import {
     ItemTableListInnerColumn,
     TableColumnContainer,
 } from '/@/renderer/components/item-list/item-table-list/item-table-list-column';
-import { AppRoute } from '/@/renderer/router/routes';
 import { Badge } from '/@/shared/components/badge/badge';
 import { Group } from '/@/shared/components/group/group';
 import { Genre } from '/@/shared/types/domain-types';
@@ -25,8 +23,7 @@ const GenreBadgeColumn = (props: ItemTableListInnerColumn) => {
         if (!row) return [];
         return row.map((genre) => {
             const { color, isLight } = stringToColor(genre.name);
-            const path = generatePath(AppRoute.LIBRARY_GENRES_DETAIL, { genreId: genre.id });
-            return { ...genre, color, isLight, path };
+            return { ...genre, color, isLight };
         });
     }, [row]);
 
@@ -36,14 +33,11 @@ const GenreBadgeColumn = (props: ItemTableListInnerColumn) => {
                 <Group className={styles.group} wrap="wrap">
                     {genres.slice(0, MAX_GENRES).map((genre) => (
                         <Badge
-                            component={Link}
                             key={genre.id}
-                            state={{ item: genre }}
                             style={{
                                 backgroundColor: genre.color,
                                 color: genre.isLight ? 'black' : 'white',
                             }}
-                            to={genre.path}
                         >
                             {genre.name}
                         </Badge>
