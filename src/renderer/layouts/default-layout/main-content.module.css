@@ -6,6 +6,9 @@
     grid-template-rows: 1fr;
     gap: 0;
     background: var(--app-background);
+
+    /* Controls, hover rows and cards use a faint white tint instead of opaque boxes */
+    --theme-colors-surface: rgb(255 255 255 / 6%);
 }
 
 .main-content-container.shell {
