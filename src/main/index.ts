@@ -659,11 +659,14 @@ async function createWindow(first = true): Promise<void> {
     // Create the browser window.
     mainWindow = new BrowserWindow({
         autoHideMenuBar: true,
+        // Transparency only works on frameless windows (custom window bar style)
+        backgroundColor: nativeFrame ? undefined : '#00000000',
         frame: false,
         icon: isWindows() ? getAssetPath('icons/icon.ico') : getAssetPath('icons/icon.png'),
         minHeight: 120,
         minWidth: 480,
         show: false,
+        transparent: !nativeFrame,
         webPreferences: {
             allowRunningInsecureContent: !!store.get('ignore_ssl'),
             backgroundThrottling: false,

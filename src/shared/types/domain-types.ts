@@ -994,18 +994,6 @@ export type AddToPlaylistQuery = {
 // Add to playlist
 export type AddToPlaylistResponse = null | undefined;
 
-export type CreateInternetRadioStationArgs = BaseEndpointArgs & {
-    body: CreateInternetRadioStationBody;
-};
-
-export type CreateInternetRadioStationBody = {
-    homepageUrl?: string;
-    name: string;
-    streamUrl: string;
-};
-
-export type CreateInternetRadioStationResponse = null | undefined;
-
 export type CreatePlaylistArgs = BaseEndpointArgs & { body: CreatePlaylistBody };
 
 export type CreatePlaylistBody = {
@@ -1030,26 +1018,6 @@ export type DeleteArtistImageQuery = {
 };
 
 export type DeleteArtistImageResponse = boolean;
-
-export type DeleteInternetRadioStationArgs = BaseEndpointArgs & {
-    query: DeleteInternetRadioStationQuery;
-};
-
-export type DeleteInternetRadioStationImageArgs = BaseEndpointArgs & {
-    query: DeleteInternetRadioStationImageQuery;
-};
-
-export type DeleteInternetRadioStationImageQuery = {
-    id: string;
-};
-
-export type DeleteInternetRadioStationImageResponse = boolean;
-
-export type DeleteInternetRadioStationQuery = {
-    id: string;
-};
-
-export type DeleteInternetRadioStationResponse = null | undefined;
 
 export type DeletePlaylistArgs = BaseEndpointArgs & {
     query: DeletePlaylistQuery;
@@ -1079,21 +1047,6 @@ export type FavoriteQuery = {
 
 // Favorite
 export type FavoriteResponse = null | undefined;
-
-export type GetInternetRadioStationsArgs = BaseEndpointArgs;
-
-export type GetInternetRadioStationsResponse = InternetRadioStation[];
-
-export type InternetRadioStation = {
-    homepageUrl: null | string;
-    id: string;
-    imageId?: null | string;
-    imageUrl?: null | string;
-    name: string;
-    streamUrl: string;
-    thumbHash?: null | string;
-    uploadedImage?: null | string;
-};
 
 export type PlaylistListArgs = BaseEndpointArgs & { query: PlaylistListQuery };
 
@@ -1173,23 +1126,6 @@ export type StartLibraryScanArgs = BaseEndpointArgs;
 
 export type StartLibraryScanResponse = null;
 
-export type UpdateInternetRadioStationArgs = BaseEndpointArgs & {
-    body: UpdateInternetRadioStationBody;
-    query: UpdateInternetRadioStationQuery;
-};
-
-export type UpdateInternetRadioStationBody = {
-    homepageUrl?: string;
-    name: string;
-    streamUrl: string;
-};
-
-export type UpdateInternetRadioStationQuery = {
-    id: string;
-};
-
-export type UpdateInternetRadioStationResponse = null | undefined;
-
 export type UpdatePlaylistArgs = BaseEndpointArgs & {
     body: UpdatePlaylistBody;
     query: UpdatePlaylistQuery;
@@ -1226,21 +1162,6 @@ export type UploadArtistImageQuery = {
 };
 
 export type UploadArtistImageResponse = boolean;
-
-export type UploadInternetRadioStationImageArgs = BaseEndpointArgs & {
-    body: UploadInternetRadioStationImageBody;
-    query: UploadInternetRadioStationImageQuery;
-};
-
-export type UploadInternetRadioStationImageBody = {
-    image: Uint8Array;
-};
-
-export type UploadInternetRadioStationImageQuery = {
-    id: string;
-};
-
-export type UploadInternetRadioStationImageResponse = boolean;
 
 export type UploadPlaylistImageArgs = BaseEndpointArgs & {
     body: UploadPlaylistImageBody;
@@ -1592,18 +1513,9 @@ export type ControllerEndpoint = {
     addToPlaylist: (args: AddToPlaylistArgs) => Promise<AddToPlaylistResponse>;
     authenticate: (url: string, body: Record<string, any>) => Promise<any>;
     createFavorite: (args: FavoriteArgs) => Promise<FavoriteResponse>;
-    createInternetRadioStation: (
-        args: CreateInternetRadioStationArgs,
-    ) => Promise<CreateInternetRadioStationResponse>;
     createPlaylist: (args: CreatePlaylistArgs) => Promise<CreatePlaylistResponse>;
     deleteArtistImage?: (args: DeleteArtistImageArgs) => Promise<DeleteArtistImageResponse>;
     deleteFavorite: (args: FavoriteArgs) => Promise<FavoriteResponse>;
-    deleteInternetRadioStation: (
-        args: DeleteInternetRadioStationArgs,
-    ) => Promise<DeleteInternetRadioStationResponse>;
-    deleteInternetRadioStationImage?: (
-        args: DeleteInternetRadioStationImageArgs,
-    ) => Promise<DeleteInternetRadioStationImageResponse>;
     deletePlaylist: (args: DeletePlaylistArgs) => Promise<DeletePlaylistResponse>;
     deletePlaylistImage?: (args: DeletePlaylistImageArgs) => Promise<DeletePlaylistImageResponse>;
     getAlbumArtistDetail: (args: AlbumArtistDetailArgs) => Promise<AlbumArtistDetailResponse>;
@@ -1624,9 +1536,6 @@ export type ControllerEndpoint = {
     getGenreList: (args: GenreListArgs) => Promise<GenreListResponse>;
     getImageRequest: (args: ImageArgs) => ImageRequest | null;
     getImageUrl: (args: ImageArgs) => null | string;
-    getInternetRadioStations: (
-        args: GetInternetRadioStationsArgs,
-    ) => Promise<GetInternetRadioStationsResponse>;
     getLyrics?: (args: LyricsArgs) => Promise<LyricsResponse>;
     getMusicFolderList: (args: MusicFolderListArgs) => Promise<MusicFolderListResponse>;
     getPlaylistDetail: (args: PlaylistDetailArgs) => Promise<PlaylistDetailResponse>;
@@ -1661,14 +1570,8 @@ export type ControllerEndpoint = {
     setRating?: (args: SetRatingArgs) => Promise<RatingResponse>;
     shareItem?: (args: ShareItemArgs) => Promise<ShareItemResponse>;
     startLibraryScan: (args: StartLibraryScanArgs) => Promise<StartLibraryScanResponse>;
-    updateInternetRadioStation: (
-        args: UpdateInternetRadioStationArgs,
-    ) => Promise<UpdateInternetRadioStationResponse>;
     updatePlaylist: (args: UpdatePlaylistArgs) => Promise<UpdatePlaylistResponse>;
     uploadArtistImage?: (args: UploadArtistImageArgs) => Promise<UploadArtistImageResponse>;
-    uploadInternetRadioStationImage?: (
-        args: UploadInternetRadioStationImageArgs,
-    ) => Promise<UploadInternetRadioStationImageResponse>;
     uploadPlaylistImage?: (args: UploadPlaylistImageArgs) => Promise<UploadPlaylistImageResponse>;
 };
 
@@ -1726,9 +1629,6 @@ export type InternalControllerEndpoint = {
     ) => Promise<AddToPlaylistResponse>;
     authenticate: (url: string, body: Record<string, any>) => Promise<any>;
     createFavorite: (args: ReplaceApiClientProps<FavoriteArgs>) => Promise<FavoriteResponse>;
-    createInternetRadioStation: (
-        args: ReplaceApiClientProps<CreateInternetRadioStationArgs>,
-    ) => Promise<CreateInternetRadioStationResponse>;
     createPlaylist: (
         args: ReplaceApiClientProps<CreatePlaylistArgs>,
     ) => Promise<CreatePlaylistResponse>;
@@ -1736,12 +1636,6 @@ export type InternalControllerEndpoint = {
         args: ReplaceApiClientProps<DeleteArtistImageArgs>,
     ) => Promise<DeleteArtistImageResponse>;
     deleteFavorite: (args: ReplaceApiClientProps<FavoriteArgs>) => Promise<FavoriteResponse>;
-    deleteInternetRadioStation: (
-        args: ReplaceApiClientProps<DeleteInternetRadioStationArgs>,
-    ) => Promise<DeleteInternetRadioStationResponse>;
-    deleteInternetRadioStationImage?: (
-        args: ReplaceApiClientProps<DeleteInternetRadioStationImageArgs>,
-    ) => Promise<DeleteInternetRadioStationImageResponse>;
     deletePlaylist: (
         args: ReplaceApiClientProps<DeletePlaylistArgs>,
     ) => Promise<DeletePlaylistResponse>;
@@ -1777,9 +1671,6 @@ export type InternalControllerEndpoint = {
     getGenreList: (args: ReplaceApiClientProps<GenreListArgs>) => Promise<GenreListResponse>;
     getImageRequest: (args: ReplaceApiClientProps<ImageArgs>) => ImageRequest | null;
     getImageUrl: (args: ReplaceApiClientProps<ImageArgs>) => null | string;
-    getInternetRadioStations: (
-        args: ReplaceApiClientProps<GetInternetRadioStationsArgs>,
-    ) => Promise<GetInternetRadioStationsResponse>;
     getLyrics?: (args: ReplaceApiClientProps<LyricsArgs>) => Promise<LyricsResponse>;
     getMusicFolderList: (
         args: ReplaceApiClientProps<MusicFolderListArgs>,
@@ -1842,18 +1733,12 @@ export type InternalControllerEndpoint = {
     startLibraryScan: (
         args: ReplaceApiClientProps<StartLibraryScanArgs>,
     ) => Promise<StartLibraryScanResponse>;
-    updateInternetRadioStation: (
-        args: ReplaceApiClientProps<UpdateInternetRadioStationArgs>,
-    ) => Promise<UpdateInternetRadioStationResponse>;
     updatePlaylist: (
         args: ReplaceApiClientProps<UpdatePlaylistArgs>,
     ) => Promise<UpdatePlaylistResponse>;
     uploadArtistImage?: (
         args: ReplaceApiClientProps<UploadArtistImageArgs>,
     ) => Promise<UploadArtistImageResponse>;
-    uploadInternetRadioStationImage?: (
-        args: ReplaceApiClientProps<UploadInternetRadioStationImageArgs>,
-    ) => Promise<UploadInternetRadioStationImageResponse>;
     uploadPlaylistImage?: (
         args: ReplaceApiClientProps<UploadPlaylistImageArgs>,
     ) => Promise<UploadPlaylistImageResponse>;

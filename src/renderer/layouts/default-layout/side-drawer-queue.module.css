@@ -11,7 +11,7 @@
 }
 
 .queue-drawer {
-    background: var(--theme-colors-background);
+    background: var(--app-background);
     border: 3px solid var(--theme-generic-border-color);
     border-radius: var(--theme-radius-lg);
 }

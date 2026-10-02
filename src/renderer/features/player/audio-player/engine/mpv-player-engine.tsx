@@ -9,7 +9,6 @@ import { eventEmitter } from '/@/renderer/events/event-emitter';
 import { usePlayerEvents } from '/@/renderer/features/player/audio-player/hooks/use-player-events';
 import { getSongUrl } from '/@/renderer/features/player/audio-player/hooks/use-stream-url';
 import { AudioPlayer, PlayerOnProgressProps } from '/@/renderer/features/player/audio-player/types';
-import { useRadioStore } from '/@/renderer/features/radio/hooks/use-radio-player';
 import { getMpvProperties } from '/@/renderer/features/settings/components/playback/mpv-properties';
 import {
     setMpvInitialized,
@@ -146,48 +145,42 @@ export const MpvPlayerEngine = (props: MpvPlayerEngineProps) => {
             }
 
             // After initialization, populate the queue if currentSrc is available
-            // Don't override queue if radio is active
-            const radioState = useRadioStore.getState();
+            const playerData = usePlayerStore.getState().getPlayerData();
+            let currentSongUrl: string | undefined;
+            let nextSongUrl: string | undefined;
+            try {
+                currentSongUrl = playerData.currentSong
+                    ? await getSongUrl(playerData.currentSong, transcode, true)
+                    : undefined;
+                nextSongUrl = playerData.nextSong
+                    ? await getSongUrl(playerData.nextSong, transcode, true)
+                    : undefined;
+            } catch (err) {
+                logger.error('mpv re-init: getSongUrl failed, queue left unpopulated', {
+                    error: err,
+                });
+            }
 
-            if (!radioState.currentStreamUrl) {
-                const playerData = usePlayerStore.getState().getPlayerData();
-                let currentSongUrl: string | undefined;
-                let nextSongUrl: string | undefined;
-                try {
-                    currentSongUrl = playerData.currentSong
-                        ? await getSongUrl(playerData.currentSong, transcode, true)
-                        : undefined;
-                    nextSongUrl = playerData.nextSong
-                        ? await getSongUrl(playerData.nextSong, transcode, true)
-                        : undefined;
-                } catch (err) {
-                    logger.error('mpv re-init: getSongUrl failed, queue left unpopulated', {
-                        error: err,
-                    });
+            if (currentSongUrl && !hasPopulatedQueueRef.current && mpvPlayer) {
+                const isDifferentNextSong =
+                    playerData.nextSong && playerData.nextSong.id !== playerData.currentSong?.id;
+                const safeNextSongUrl = isDifferentNextSong ? nextSongUrl : undefined;
+                const shouldPause =
+                    usePlayerStore.getState().player.status !== PlayerStatus.PLAYING;
+                mpvPlayer.setQueue(currentSongUrl, safeNextSongUrl, shouldPause);
+                hasPopulatedQueueRef.current = true;
+                let seekToAfterInit = -1;
+                if (playerHandoff.pendingLocalSeek > 0 && isMountedRef.current) {
+                    seekToAfterInit = playerHandoff.pendingLocalSeek;
+                    playerHandoff.pendingLocalSeek = -1;
                 }
-
-                if (currentSongUrl && !hasPopulatedQueueRef.current && mpvPlayer) {
-                    const isDifferentNextSong =
-                        playerData.nextSong &&
-                        playerData.nextSong.id !== playerData.currentSong?.id;
-                    const safeNextSongUrl = isDifferentNextSong ? nextSongUrl : undefined;
-                    const shouldPause =
-                        usePlayerStore.getState().player.status !== PlayerStatus.PLAYING;
-                    mpvPlayer.setQueue(currentSongUrl, safeNextSongUrl, shouldPause);
-                    hasPopulatedQueueRef.current = true;
-                    let seekToAfterInit = -1;
-                    if (playerHandoff.pendingLocalSeek > 0 && isMountedRef.current) {
-                        seekToAfterInit = playerHandoff.pendingLocalSeek;
-                        playerHandoff.pendingLocalSeek = -1;
-                    }
-                    await new Promise((r) => setTimeout(r, 400));
-                    if (isMountedRef.current) {
-                        setInitializationTick((t) => t + 1);
-                        if (seekToAfterInit > 0) {
-                            setTimeout(() => {
-                                if (isMountedRef.current) mpvPlayer?.seekTo(seekToAfterInit);
-                            }, 800);
-                        }
+                await new Promise((r) => setTimeout(r, 400));
+                if (isMountedRef.current) {
+                    setInitializationTick((t) => t + 1);
+                    if (seekToAfterInit > 0) {
+                        setTimeout(() => {
+                            if (isMountedRef.current) mpvPlayer?.seekTo(seekToAfterInit);
+                        }, 800);
                     }
                 }
             }
@@ -363,12 +356,6 @@ export const MpvPlayerEngine = (props: MpvPlayerEngineProps) => {
                 replaceMpvQueue(transcode);
             },
             onNextSongInsertion: async (song) => {
-                const radioState = useRadioStore.getState();
-
-                if (radioState.currentStreamUrl) {
-                    return;
-                }
-
                 const nextSongUrl = song ? await getSongUrl(song, transcode, true) : undefined;
                 mpvPlayer?.setQueueNext(nextSongUrl);
             },
@@ -448,13 +435,6 @@ async function replaceMpvQueue(transcode: {
     enabled: boolean;
     format?: string | undefined;
 }) {
-    // Don't override queue if radio is active
-    const radioState = useRadioStore.getState();
-
-    if (radioState.currentStreamUrl) {
-        return;
-    }
-
     const playerData = usePlayerStore.getState().getPlayerData();
     const currentSongUrl = playerData.currentSong
         ? await getSongUrl(playerData.currentSong, transcode, true)

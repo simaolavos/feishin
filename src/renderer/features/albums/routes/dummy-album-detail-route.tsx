@@ -24,10 +24,10 @@ import { usePlayButtonBehavior } from '/@/renderer/store/settings.store';
 import { formatDurationString } from '/@/renderer/utils';
 import { replaceURLWithHTMLLinks } from '/@/renderer/utils/linkify';
 import { ActionIcon } from '/@/shared/components/action-icon/action-icon';
-import { Button } from '/@/shared/components/button/button';
 import { Center } from '/@/shared/components/center/center';
 import { Group } from '/@/shared/components/group/group';
 import { Icon } from '/@/shared/components/icon/icon';
+import { Pill } from '/@/shared/components/pill/pill';
 import { Spoiler } from '/@/shared/components/spoiler/spoiler';
 import { Stack } from '/@/shared/components/stack/stack';
 import { Text } from '/@/shared/components/text/text';
@@ -209,18 +209,9 @@ const DummyAlbumDetailRoute = () => {
                         <section>
                             <Group gap="sm">
                                 {detailQuery?.data?.genres?.map((genre) => (
-                                    <Button
-                                        component={Link}
-                                        key={`genre-${genre.id}`}
-                                        radius={0}
-                                        size="compact-md"
-                                        to={generatePath(AppRoute.LIBRARY_GENRES_DETAIL, {
-                                            genreId: genre.id,
-                                        })}
-                                        variant="outline"
-                                    >
+                                    <Pill key={`genre-${genre.id}`} size="md">
                                         {genre.name}
-                                    </Button>
+                                    </Pill>
                                 ))}
                             </Group>
                         </section>

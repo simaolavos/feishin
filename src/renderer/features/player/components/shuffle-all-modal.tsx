@@ -1,7 +1,7 @@
 import { closeAllModals, openContextModal } from '@mantine/modals';
 import { queryOptions, useQuery } from '@tanstack/react-query';
 import merge from 'lodash/merge';
-import { Suspense, useMemo, useRef } from 'react';
+import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
@@ -11,7 +11,6 @@ import i18n from '/@/i18n/i18n';
 import { api } from '/@/renderer/api';
 import { queryKeys } from '/@/renderer/api/query-keys';
 import { albumQueries } from '/@/renderer/features/albums/api/album-api';
-import { useGenreList } from '/@/renderer/features/genres/api/genres-api';
 import { usePlayer } from '/@/renderer/features/player/context/player-context';
 import { PlayButtonGroup } from '/@/renderer/features/shared/components/play-button-group';
 import { useCurrentServer } from '/@/renderer/store';
@@ -232,9 +231,6 @@ export const ShuffleAllContextModal = () => {
                     value={maxYear}
                 />
             </Group>
-            <Suspense fallback={<Select data={[]} />}>
-                <GenreSelect />
-            </Suspense>
             {server?.type === ServerType.JELLYFIN && playbackKind === 'songs' && (
                 <Select
                     clearable
@@ -288,38 +284,4 @@ export const openShuffleAllModal = async () => {
         size: 'sm',
         title: i18n.t('player.playRandom') as string,
     });
-};
-
-const GenreSelect = () => {
-    const { t } = useTranslation();
-    const server = useCurrentServer();
-    const { genre } = useShuffleAllStore();
-    const { data: genres } = useGenreList();
-    const { setStore } = useShuffleAllStoreActions();
-
-    const genreData = useMemo(() => {
-        if (!genres) return [];
-
-        return genres.items.map((genre) => {
-            const value =
-                server?.type === ServerType.NAVIDROME || server?.type === ServerType.SUBSONIC
-                    ? genre.name
-                    : genre.id;
-            return {
-                label: genre.name,
-                value,
-            };
-        });
-    }, [genres, server.type]);
-
-    return (
-        <Select
-            clearable
-            data={genreData}
-            label={t('form.shuffleAll.input_genre')}
-            onChange={(e) => setStore({ genre: e || '' })}
-            searchable
-            value={genre}
-        />
-    );
 };

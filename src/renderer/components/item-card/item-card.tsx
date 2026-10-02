@@ -1126,16 +1126,7 @@ export const getDataRows = (type?: 'compact' | 'default' | 'poster'): DataRow[] 
                                         </Link>
                                     );
                                 case LibraryItem.GENRE:
-                                    return (
-                                        <Link
-                                            state={{ item: data }}
-                                            to={generatePath(AppRoute.LIBRARY_GENRES_DETAIL, {
-                                                genreId: data.id,
-                                            })}
-                                        >
-                                            {data.name}
-                                        </Link>
-                                    );
+                                    return <span>{data.name}</span>;
                                 case LibraryItem.PLAYLIST:
                                     return (
                                         <Link

@@ -20,10 +20,6 @@ import {
     FullScreenPlayerQueue,
 } from '/@/renderer/features/player/components/full-screen-player-queue';
 import { SharedFullscreenPlayerSettings } from '/@/renderer/features/player/components/shared-full-screen-player-settings';
-import {
-    useIsRadioActive,
-    useRadioPlayer,
-} from '/@/renderer/features/radio/hooks/use-radio-player';
 import { useFastAverageColor } from '/@/renderer/hooks';
 import {
     useFullScreenPlayerStore,
@@ -266,13 +262,9 @@ interface PlayerContainerProps {
 const PlayerContainer = memo(
     ({ children, dynamicBackground, dynamicIsImage, opacity }: PlayerContainerProps) => {
         const currentSong = usePlayerSong();
-        const isRadioActive = useIsRadioActive();
-        const { currentStationArt: currentRadioStationArt } = useRadioPlayer();
 
-        const imageId = isRadioActive ? currentRadioStationArt?.imageId : currentSong?.imageId;
-        const currentImageUrl = isRadioActive
-            ? currentRadioStationArt?.imageUrl
-            : currentSong?.imageUrl;
+        const imageId = currentSong?.imageId;
+        const currentImageUrl = currentSong?.imageUrl;
 
         const imageUrl = useItemImageUrl({
             id: imageId || undefined,
@@ -319,12 +311,6 @@ export const FullScreenPlayer = () => {
         activeTab === 'lyrics' ||
         activeTab === 'visualizer';
 
-    const isRadioActive = useIsRadioActive();
-    const { isPlaying: isRadioPlaying } = useRadioPlayer();
-
-    const isPlayingRadio = isRadioActive && isRadioPlaying;
-    const effectiveDynamicBackground = dynamicBackground && !isPlayingRadio;
-
     const location = useLocation();
     const isOpenedRef = useRef<boolean | null>(null);
 
@@ -338,7 +324,7 @@ export const FullScreenPlayer = () => {
 
     return (
         <PlayerContainer
-            dynamicBackground={effectiveDynamicBackground}
+            dynamicBackground={dynamicBackground}
             dynamicIsImage={dynamicIsImage}
             opacity={opacity}
         >
@@ -356,7 +342,7 @@ export const FullScreenPlayer = () => {
                 <SharedFullscreenPlayerSettings />
             </Group>
             <BackgroundImageOverlay
-                dynamicBackground={effectiveDynamicBackground}
+                dynamicBackground={dynamicBackground}
                 dynamicImageBlur={dynamicImageBlur}
             />
             <div className={styles.responsiveContainer}>

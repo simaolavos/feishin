@@ -2,7 +2,6 @@ import { t } from 'i18next';
 import isElectron from 'is-electron';
 import { useCallback, useEffect } from 'react';
 
-import { useIsRadioActive, useRadioStore } from '/@/renderer/features/radio/hooks/use-radio-player';
 import { usePlayerActions, useVolumeWheelStep } from '/@/renderer/store';
 import { toast } from '/@/shared/components/toast/toast';
 
@@ -10,18 +9,7 @@ const mpvPlayer = isElectron() ? window.api.mpvPlayer : null;
 const mpvPlayerListener = isElectron() ? window.api.mpvPlayerListener : null;
 const ipc = isElectron() ? window.api.ipc : null;
 
-const toggleRadioPlayPause = () => {
-    const radio = useRadioStore.getState();
-
-    if (radio.isPlaying) {
-        radio.actions.pause();
-    } else if (radio.currentStreamUrl) {
-        radio.actions.play();
-    }
-};
-
 export const useMainPlayerListener = () => {
-    const isRadioActive = useIsRadioActive();
     const volumeWheelStep = useVolumeWheelStep();
     const {
         decreaseVolume,
@@ -59,63 +47,35 @@ export const useMainPlayerListener = () => {
         }
 
         mpvPlayerListener.rendererPlayPause(() => {
-            if (!isRadioActive) {
-                mediaTogglePlayPause();
-                return;
-            }
-
-            toggleRadioPlayPause();
+            mediaTogglePlayPause();
         });
 
         mpvPlayerListener.rendererNext(() => {
-            if (!isRadioActive) {
-                mediaNext(false);
-            }
+            mediaNext(false);
         });
 
         mpvPlayerListener.rendererNextAlbum(() => {
-            if (!isRadioActive) {
-                mediaNext(true);
-            }
+            mediaNext(true);
         });
 
         mpvPlayerListener.rendererPrevious(() => {
-            if (!isRadioActive) {
-                mediaPrevious(false);
-            }
+            mediaPrevious(false);
         });
 
         mpvPlayerListener.rendererPreviousAlbum(() => {
-            if (!isRadioActive) {
-                mediaPrevious(true);
-            }
+            mediaPrevious(true);
         });
 
         mpvPlayerListener.rendererPlay(() => {
-            if (!isRadioActive) {
-                mediaPlay();
-            } else {
-                const radio = useRadioStore.getState();
-                if (radio.currentStreamUrl) {
-                    radio.actions.play();
-                }
-            }
+            mediaPlay();
         });
 
         mpvPlayerListener.rendererPause(() => {
-            if (!isRadioActive) {
-                mediaPause();
-            } else {
-                useRadioStore.getState().actions.pause();
-            }
+            mediaPause();
         });
 
         mpvPlayerListener.rendererStop(() => {
-            if (!isRadioActive) {
-                mediaStop({ reset: false });
-            } else {
-                useRadioStore.getState().actions.stop();
-            }
+            mediaStop({ reset: false });
         });
 
         mpvPlayerListener.rendererSkipForward(() => {
@@ -170,7 +130,6 @@ export const useMainPlayerListener = () => {
         decreaseVolume,
         handleMpvError,
         increaseVolume,
-        isRadioActive,
         mediaAutoNext,
         mediaNext,
         mediaPause,

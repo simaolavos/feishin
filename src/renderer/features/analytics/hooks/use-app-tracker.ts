@@ -76,7 +76,6 @@ type SettingsProperties = {
     'settings.followSystemTheme': boolean;
     'settings.fontType': FontType;
     'settings.globalHotkeys': boolean;
-    'settings.homeFeature': boolean;
     'settings.language': string;
     'settings.lyrics.enableAutoTranslation': boolean;
     'settings.lyrics.enableNeteaseTranslation': boolean;
@@ -150,7 +149,6 @@ const getSettingsProperties = (): SettingsProperties => {
         'settings.followSystemTheme': settings.general.followSystemTheme,
         'settings.fontType': settings.font.type,
         'settings.globalHotkeys': settings.hotkeys.globalMediaHotkeys,
-        'settings.homeFeature': settings.general.homeFeature,
         'settings.language': settings.general.language,
         // 'settings.lastFM': settings.general.lastFM,
         'settings.lyrics.enableAutoTranslation': ignoreWeb(settings.lyrics.enableAutoTranslation),

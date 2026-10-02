@@ -24,10 +24,6 @@ import { MobileFullscreenPlayerControls } from '/@/renderer/features/player/comp
 import { MobileFullscreenPlayerHeader } from '/@/renderer/features/player/components/mobile-fullscreen-player-header';
 import { MobileFullscreenPlayerMetadata } from '/@/renderer/features/player/components/mobile-fullscreen-player-metadata';
 import { MobileFullscreenPlayerProgress } from '/@/renderer/features/player/components/mobile-fullscreen-player-progress';
-import {
-    useIsRadioActive,
-    useRadioPlayer,
-} from '/@/renderer/features/radio/hooks/use-radio-player';
 import { useSetFavorite } from '/@/renderer/features/shared/hooks/use-set-favorite';
 import { useSetRating } from '/@/renderer/features/shared/hooks/use-set-rating';
 import { useFastAverageColor } from '/@/renderer/hooks';
@@ -338,13 +334,9 @@ const MobilePlayerContainer = memo(
         opacity,
     }: MobilePlayerContainerProps) => {
         const currentSong = usePlayerSong();
-        const isRadioActive = useIsRadioActive();
-        const { currentStationArt: currentRadioStationArt } = useRadioPlayer();
 
-        const imageId = isRadioActive ? currentRadioStationArt?.imageId : currentSong?.imageId;
-        const currentImageUrl = isRadioActive
-            ? currentRadioStationArt?.imageUrl
-            : currentSong?.imageUrl;
+        const imageId = currentSong?.imageId;
+        const currentImageUrl = currentSong?.imageUrl;
 
         const imageUrl = useItemImageUrl({
             id: imageId || undefined,
@@ -428,8 +420,6 @@ export const MobileFullscreenPlayer = () => {
         useFullScreenPlayerStore();
     const currentSong = usePlayerSong();
     const { currentSong: currentSongData } = usePlayerData();
-    const isRadioActive = useIsRadioActive();
-    const { metadata: radioMetadata, stationName } = useRadioPlayer();
     const server = useCurrentServer();
 
     const effectiveDynamicBackground = dynamicBackground;
@@ -522,8 +512,6 @@ export const MobileFullscreenPlayer = () => {
                     currentSong={currentSong}
                     onToggleFavorite={handleToggleFavorite}
                     onUpdateRating={handleUpdateRating}
-                    radioStationName={isRadioActive ? (stationName ?? undefined) : undefined}
-                    radioTitle={isRadioActive ? (radioMetadata?.title ?? undefined) : undefined}
                     showFavorite={showFavorites}
                     showRating={showRating}
                 />

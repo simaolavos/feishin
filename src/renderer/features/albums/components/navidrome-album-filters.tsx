@@ -5,11 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { getItemImageUrl } from '/@/renderer/components/item-image/item-image';
 import { useAlbumListFilters } from '/@/renderer/features/albums/hooks/use-album-list-filters';
 import { artistsQueries } from '/@/renderer/features/artists/api/artists-api';
-import { genresQueries } from '/@/renderer/features/genres/api/genres-api';
-import {
-    ArtistMultiSelectRow,
-    GenreMultiSelectRow,
-} from '/@/renderer/features/shared/components/multi-select-rows';
+import { ArtistMultiSelectRow } from '/@/renderer/features/shared/components/multi-select-rows';
 import { TagFilters } from '/@/renderer/features/shared/components/tag-filter';
 import { useCurrentServer } from '/@/renderer/store';
 import { useAppStore, useAppStoreActions } from '/@/renderer/store/app.store';
@@ -22,29 +18,19 @@ import { Stack } from '/@/shared/components/stack/stack';
 import { Switch } from '/@/shared/components/switch/switch';
 import { Text } from '/@/shared/components/text/text';
 import { useDebouncedCallback } from '/@/shared/hooks/use-debounced-callback';
-import {
-    AlbumArtistListSort,
-    GenreListSort,
-    LibraryItem,
-    SortOrder,
-} from '/@/shared/types/domain-types';
+import { AlbumArtistListSort, LibraryItem, SortOrder } from '/@/shared/types/domain-types';
 
 interface NavidromeAlbumFiltersProps {
     disableArtistFilter?: boolean;
-    disableGenreFilter?: boolean;
 }
 
-export const NavidromeAlbumFilters = ({
-    disableArtistFilter,
-    disableGenreFilter,
-}: NavidromeAlbumFiltersProps) => {
+export const NavidromeAlbumFilters = ({ disableArtistFilter }: NavidromeAlbumFiltersProps) => {
     const { t } = useTranslation();
     const server = useCurrentServer();
     const serverId = server.id;
 
     const artistSelectMode = useAppStore((state) => state.artistSelectMode);
-    const genreSelectMode = useAppStore((state) => state.genreSelectMode);
-    const { setArtistSelectMode, setGenreSelectMode } = useAppStoreActions();
+    const { setArtistSelectMode } = useAppStoreActions();
 
     const {
         query,
@@ -52,37 +38,11 @@ export const NavidromeAlbumFilters = ({
         setCompilation,
         setCustom,
         setFavorite,
-        setGenreId,
         setHasRating,
         setMaxYear,
         setMinYear,
         setRecentlyPlayed,
     } = useAlbumListFilters();
-
-    const genreListQuery = useQuery(
-        genresQueries.list({
-            options: {
-                gcTime: 1000 * 60 * 2,
-                staleTime: 1000 * 60 * 1,
-            },
-            query: {
-                sortBy: GenreListSort.NAME,
-                sortOrder: SortOrder.ASC,
-                startIndex: 0,
-            },
-            serverId,
-        }),
-    );
-
-    const genreList = useMemo(() => {
-        if (!genreListQuery?.data) return [];
-        return genreListQuery.data.items.map((genre) => ({
-            albumCount: genre.albumCount,
-            label: genre.name,
-            songCount: genre.songCount,
-            value: genre.id,
-        }));
-    }, [genreListQuery.data]);
 
     // Helper function to convert boolean/null to segment value
     const booleanToSegmentValue = (value: boolean | null | undefined): string => {
@@ -189,20 +149,7 @@ export const NavidromeAlbumFilters = ({
 
     const debouncedHandleYearFilter = useDebouncedCallback(handleYearFilter, 300);
 
-    const handleGenreChange = useCallback(
-        (e: null | string[]) => {
-            if (e && e.length > 0) {
-                setGenreId(e);
-            } else {
-                setGenreId(null);
-            }
-        },
-        [setGenreId],
-    );
-
     const selectedArtistIds = useMemo(() => query.artistIds || [], [query.artistIds]);
-    const selectedGenreIds = useMemo(() => query.genreIds || [], [query.genreIds]);
-
     const handleAlbumArtistChange = useCallback(
         (e: null | string[]) => {
             if (e && e.length > 0) {
@@ -224,18 +171,6 @@ export const NavidromeAlbumFilters = ({
             }
         },
         [selectedArtistIds, setAlbumArtist, setArtistSelectMode],
-    );
-
-    const handleGenreSelectModeChange = useCallback(
-        (value: string) => {
-            const newMode = value as 'multi' | 'single';
-            setGenreSelectMode(newMode);
-
-            if (newMode === 'single' && selectedGenreIds.length > 1) {
-                setGenreId([selectedGenreIds[0]]);
-            }
-        },
-        [selectedGenreIds, setGenreId, setGenreSelectMode],
     );
 
     const artistFilterLabel = useMemo(() => {
@@ -262,31 +197,6 @@ export const NavidromeAlbumFilters = ({
             </Group>
         );
     }, [artistSelectMode, handleArtistSelectModeChange, t]);
-
-    const genreFilterLabel = useMemo(() => {
-        return (
-            <Group gap="xs" justify="space-between" w="100%">
-                <Text fw={500} size="sm">
-                    {t('entity.genre', { count: 2 })}
-                </Text>
-                <SegmentedControl
-                    data={[
-                        {
-                            label: t('common.filter_single'),
-                            value: 'single',
-                        },
-                        {
-                            label: t('common.filter_multiple'),
-                            value: 'multi',
-                        },
-                    ]}
-                    onChange={handleGenreSelectModeChange}
-                    size="xs"
-                    value={genreSelectMode}
-                />
-            </Group>
-        );
-    }, [genreSelectMode, handleGenreSelectModeChange, t]);
 
     return (
         <Stack px="md" py="md">
@@ -351,22 +261,6 @@ export const NavidromeAlbumFilters = ({
                         RowComponent={ArtistMultiSelectRow}
                         singleSelect={artistSelectMode === 'single'}
                         value={selectedArtistIds}
-                    />
-                </>
-            )}
-            {!disableGenreFilter && (
-                <>
-                    <Divider my="md" />
-                    <VirtualMultiSelect
-                        displayCountType="album"
-                        height={220}
-                        isLoading={genreListQuery.isFetching}
-                        label={genreFilterLabel}
-                        onChange={handleGenreChange}
-                        options={genreList}
-                        RowComponent={GenreMultiSelectRow}
-                        singleSelect={genreSelectMode === 'single'}
-                        value={selectedGenreIds}
                     />
                 </>
             )}

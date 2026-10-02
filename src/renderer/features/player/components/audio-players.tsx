@@ -24,17 +24,9 @@ import { ResumePositionHook } from '/@/renderer/features/player/hooks/use-resume
 import { ScrobbleHook } from '/@/renderer/features/player/hooks/use-scrobble';
 import { UpdateCurrentSongHook } from '/@/renderer/features/player/hooks/use-update-current-song';
 import { useWebAudio } from '/@/renderer/features/player/hooks/use-webaudio';
-import { RadioDlnaPlayer } from '/@/renderer/features/radio/components/radio-dlna-player';
-import { RadioWebPlayer } from '/@/renderer/features/radio/components/radio-web-player';
-import {
-    RadioAudioInstanceHook,
-    RadioMetadataHook,
-    useIsRadioActive,
-} from '/@/renderer/features/radio/hooks/use-radio-player';
 import { RemoteHook } from '/@/renderer/features/remote/hooks/use-remote';
 import { RemoteLibraryHook } from '/@/renderer/features/remote/hooks/use-remote-library';
 import { RemoteQueuePushHook } from '/@/renderer/features/remote/hooks/use-remote-queue-push';
-import { RemoteRadioPushHook } from '/@/renderer/features/remote/hooks/use-remote-radio-push';
 import { RemoteSettingsPushHook } from '/@/renderer/features/remote/hooks/use-remote-settings-push';
 import { ComponentErrorBoundary } from '/@/renderer/features/shared/components/component-error-boundary';
 import { VisualizerSystemAudioBridgeHook } from '/@/renderer/features/visualizer/components/visualizer-system-audio-bridge';
@@ -143,15 +135,12 @@ export const AudioPlayers = () => {
             <RemoteHook />
             <RemoteLibraryHook />
             <RemoteQueuePushHook />
-            <RemoteRadioPushHook />
             <RemoteSettingsPushHook />
             <AutoDJHook />
             <QueueRestoreTimestampHook />
             <InitialTimestampRestoreHook />
             <ResumePositionHook />
             <UpdateCurrentSongHook />
-            <RadioAudioInstanceHook />
-            <RadioMetadataHook />
             <VisualizerSystemAudioBridgeHook />
             <AutosaveHook />
             <AudioPlayersContent
@@ -189,8 +178,6 @@ const AudioPlayersContent = ({
     setWebAudio: ReturnType<typeof useWebAudio>['setWebAudio'];
     webAudio: boolean;
 }) => {
-    const isRadioActive = useIsRadioActive();
-
     useEffect(() => {
         logger.info('Playback engine', { playbackType });
     }, [playbackType]);
@@ -377,17 +364,13 @@ const AudioPlayersContent = ({
     }
 
     if (playbackType === PlayerType.WEB) {
-        if (isRadioActive) {
-            return <RadioWebPlayer />;
-        }
-
         return <WebPlayer />;
     }
 
     if (playbackType === PlayerType.DLNA) {
         return (
             <ComponentErrorBoundary>
-                {isRadioActive ? <RadioDlnaPlayer /> : <DlnaPlayer />}
+                <DlnaPlayer />
             </ComponentErrorBoundary>
         );
     }

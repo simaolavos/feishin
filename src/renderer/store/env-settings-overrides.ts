@@ -107,7 +107,6 @@ const DISCORD_DISPLAY_TYPES = new Set(['artist', 'feishin', 'song']);
 const DISCORD_LINK_TYPES = new Set(['last_fm', 'musicbrainz', 'musicbrainz_last_fm', 'none']);
 const LYRICS_ALIGNMENTS = new Set(['center', 'left', 'right']);
 const FONT_TYPES = new Set(['builtIn', 'custom', 'system']);
-const HOME_FEATURE_STYLES = new Set(['multiple', 'single']);
 const SIDE_QUEUE_TYPES = new Set(['sideDrawerQueue', 'sideQueue']);
 const SIDE_QUEUE_LAYOUTS = new Set(['horizontal', 'vertical']);
 const SIDEBAR_PLAYLIST_FOLDER_VIEWS = new Set(['navigation', 'single', 'tree']);
@@ -191,13 +190,6 @@ const ENV_SETTING_SPECS: EnvSettingSpec[] = [
         type: 'bool',
     },
     { key: 'FS_GENERAL_FOLLOW_CURRENT_SONG', path: ['general', 'followCurrentSong'], type: 'bool' },
-    { key: 'FS_GENERAL_HOME_FEATURE', path: ['general', 'homeFeature'], type: 'bool' },
-    {
-        enumSet: HOME_FEATURE_STYLES,
-        key: 'FS_GENERAL_HOME_FEATURE_STYLE',
-        path: ['general', 'homeFeatureStyle'],
-        type: 'enum',
-    },
     {
         enumSet: new Set(IMAGE_PLACEHOLDER_PRIORITIES),
         key: 'FS_GENERAL_IMAGE_PLACEHOLDER_PRIORITY',

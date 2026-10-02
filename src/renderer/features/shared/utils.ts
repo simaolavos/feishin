@@ -7,7 +7,6 @@ import {
     AlbumArtist,
     Artist,
     Genre,
-    InternetRadioStation,
     LibraryItem,
     Playlist,
     QueueSong,
@@ -102,15 +101,7 @@ interface CreateFuseOptions {
     threshold?: number;
 }
 
-type FuseSearchableItem =
-    | Album
-    | AlbumArtist
-    | Artist
-    | Genre
-    | InternetRadioStation
-    | Playlist
-    | QueueSong
-    | Song;
+type FuseSearchableItem = Album | AlbumArtist | Artist | Genre | Playlist | QueueSong | Song;
 
 export const createFuseForLibraryItem = <T extends FuseSearchableItem>(
     items: T[],
@@ -174,7 +165,6 @@ export const createFuseForLibraryItem = <T extends FuseSearchableItem>(
 
         case LibraryItem.ARTIST:
         case LibraryItem.GENRE:
-        case LibraryItem.RADIO_STATION:
             stringKeys.push('name');
             break;
         case LibraryItem.PLAYLIST: {

@@ -6,7 +6,6 @@ import { useIsFetchingItemListCount } from '/@/renderer/components/item-list/hel
 import { PageHeader } from '/@/renderer/components/page-header/page-header';
 import { useListContext } from '/@/renderer/context/list-context';
 import { artistsQueries } from '/@/renderer/features/artists/api/artists-api';
-import { useGenreList } from '/@/renderer/features/genres/api/genres-api';
 import { FilterBar } from '/@/renderer/features/shared/components/filter-bar';
 import { LibraryHeaderBar } from '/@/renderer/features/shared/components/library-header-bar';
 import { ListSearchInput } from '/@/renderer/features/shared/components/list-search-input';
@@ -78,8 +77,6 @@ const PageTitle = ({ title }: { title?: string }) => {
     switch (pageKey) {
         case ItemListKey.ALBUM_ARTIST_SONG:
             return <AlbumArtistTitle />;
-        case ItemListKey.GENRE_SONG:
-            return <GenreTitle />;
     }
 
     return <LibraryHeaderBar.Title>{pageTitle}</LibraryHeaderBar.Title>;
@@ -97,16 +94,4 @@ const AlbumArtistTitle = () => {
     );
 
     return <LibraryHeaderBar.Title>{albumArtist?.name || '—'}</LibraryHeaderBar.Title>;
-};
-
-const GenreTitle = () => {
-    const { id } = useListContext();
-
-    const { data: genre } = useGenreList();
-
-    const name = useMemo(() => {
-        return genre?.items.find((g) => g.id === id)?.name || '—';
-    }, [id, genre]);
-
-    return <LibraryHeaderBar.Title>{name || '—'}</LibraryHeaderBar.Title>;
 };

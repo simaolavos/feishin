@@ -521,14 +521,7 @@ const MetadataSection = memo(
                     content: genres.map((genre, i) => (
                         <Fragment key={genre.id}>
                             {i > 0 && ', '}
-                            <Link
-                                className={styles.metadataLink}
-                                to={generatePath(AppRoute.LIBRARY_GENRES_DETAIL, {
-                                    genreId: genre.id,
-                                })}
-                            >
-                                {genre.name}
-                            </Link>
+                            {genre.name}
                         </Fragment>
                     )),
                     key: 'genres',

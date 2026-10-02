@@ -6,7 +6,7 @@ import { ndApiClient } from '/@/renderer/api/navidrome/navidrome-api';
 import { ssApiClient } from '/@/renderer/api/subsonic/subsonic-api';
 import { SubsonicController } from '/@/renderer/api/subsonic/subsonic-controller';
 import { ndNormalize } from '/@/shared/api/navidrome/navidrome-normalize';
-import { NDRadioListSort, NDSongListSort } from '/@/shared/api/navidrome/navidrome-types';
+import { NDSongListSort } from '/@/shared/api/navidrome/navidrome-types';
 import { ssNormalize } from '/@/shared/api/subsonic/subsonic-normalize';
 import { getFeatures, hasFeature, hasFeatureWithVersion, VersionInfo } from '/@/shared/api/utils';
 import {
@@ -14,8 +14,6 @@ import {
     albumListSortMap,
     DeleteArtistImageArgs,
     DeleteArtistImageResponse,
-    DeleteInternetRadioStationImageArgs,
-    DeleteInternetRadioStationImageResponse,
     DeletePlaylistImageArgs,
     DeletePlaylistImageResponse,
     InternalControllerEndpoint,
@@ -30,8 +28,6 @@ import {
     tagListSortMap,
     UploadArtistImageArgs,
     UploadArtistImageResponse,
-    UploadInternetRadioStationImageArgs,
-    UploadInternetRadioStationImageResponse,
     UploadPlaylistImageArgs,
     UploadPlaylistImageResponse,
     userListSortMap,
@@ -171,7 +167,6 @@ export const NavidromeController: InternalControllerEndpoint = {
         };
     },
     createFavorite: SubsonicController.createFavorite,
-    createInternetRadioStation: SubsonicController.createInternetRadioStation,
     createPlaylist: async (args) => {
         const { apiClientProps, body } = args;
 
@@ -210,38 +205,6 @@ export const NavidromeController: InternalControllerEndpoint = {
         return res.body.data.status === 'ok';
     },
     deleteFavorite: SubsonicController.deleteFavorite,
-    deleteInternetRadioStation: async (args) => {
-        const { apiClientProps, query } = args;
-
-        const res = await ndApiClient(apiClientProps).deleteInternetRadioStation({
-            params: {
-                id: query.id,
-            },
-        });
-
-        if (res.status !== 200) {
-            throw new Error('Failed to delete internet radio station');
-        }
-
-        return null;
-    },
-    deleteInternetRadioStationImage: async (
-        args: DeleteInternetRadioStationImageArgs,
-    ): Promise<DeleteInternetRadioStationImageResponse> => {
-        const { apiClientProps, query } = args;
-
-        const res = await ndApiClient(apiClientProps as any).deleteInternetRadioStationImage({
-            params: {
-                id: query.id,
-            },
-        });
-
-        if (res.status !== 200) {
-            throw new Error('Failed to delete internet radio station image');
-        }
-
-        return res.body.data.status === 'ok';
-    },
     deletePlaylist: async (args) => {
         const { apiClientProps, query } = args;
 
@@ -657,24 +620,6 @@ export const NavidromeController: InternalControllerEndpoint = {
     },
     getImageRequest: SubsonicController.getImageRequest,
     getImageUrl: SubsonicController.getImageUrl,
-    getInternetRadioStations: async (args) => {
-        const { apiClientProps } = args;
-
-        const res = await ndApiClient(apiClientProps).getRadioList({
-            query: {
-                _end: -1,
-                _order: 'ASC',
-                _sort: NDRadioListSort.NAME,
-                _start: 0,
-            },
-        });
-
-        if (res.status !== 200) {
-            throw new Error('Failed to get internet radio stations');
-        }
-
-        return res.body.data.map((station) => ndNormalize.internetRadioStation(station));
-    },
     getLyrics: SubsonicController.getLyrics,
     getMusicFolderList: SubsonicController.getMusicFolderList,
     getPlaylistDetail: async (args) => {
@@ -1246,26 +1191,6 @@ export const NavidromeController: InternalControllerEndpoint = {
         };
     },
     startLibraryScan: SubsonicController.startLibraryScan,
-    updateInternetRadioStation: async (args) => {
-        const { apiClientProps, body, query } = args;
-
-        const res = await ndApiClient(apiClientProps).updateInternetRadioStation({
-            body: {
-                homePageUrl: body.homepageUrl ?? '',
-                name: body.name,
-                streamUrl: body.streamUrl,
-            },
-            params: {
-                id: query.id,
-            },
-        });
-
-        if (res.status !== 200) {
-            throw new Error('Failed to update internet radio station');
-        }
-
-        return null;
-    },
     updatePlaylist: async (args) => {
         const { apiClientProps, body, query } = args;
 
@@ -1320,42 +1245,6 @@ export const NavidromeController: InternalControllerEndpoint = {
 
         if (res.status !== 200) {
             throw new Error('Failed to upload artist image');
-        }
-
-        return res.data?.status === 'ok';
-    },
-    uploadInternetRadioStationImage: async (
-        args: UploadInternetRadioStationImageArgs,
-    ): Promise<UploadInternetRadioStationImageResponse> => {
-        const { apiClientProps, body, query } = args;
-
-        const server = apiClientProps.server;
-        const serverUrl = server?.url?.replace(/\/$/, '');
-
-        if (!serverUrl) {
-            throw new Error('Server is required');
-        }
-
-        const form = new FormData();
-        const bytes = body.image as Uint8Array<ArrayBuffer>;
-        const fileLike =
-            typeof File !== 'undefined'
-                ? new File([bytes], 'image', { type: 'application/octet-stream' })
-                : new Blob([bytes], { type: 'application/octet-stream' });
-        form.append('image', fileLike as any);
-
-        const res = await axios.post(`${serverUrl}/api/radio/${query.id}/image`, form, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                ...(server?.ndCredential && {
-                    'x-nd-authorization': `Bearer ${server.ndCredential}`,
-                }),
-            },
-            signal: apiClientProps.signal,
-        });
-
-        if (res.status !== 200) {
-            throw new Error('Failed to upload internet radio station image');
         }
 
         return res.data?.status === 'ok';

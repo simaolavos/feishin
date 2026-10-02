@@ -40,7 +40,6 @@ import {
 } from '/@/renderer/features/lyrics/unsynchronized-lyrics';
 import { openLyricsSettingsModal } from '/@/renderer/features/lyrics/utils/open-lyrics-settings-modal';
 import { usePlayerEvents } from '/@/renderer/features/player/audio-player/hooks/use-player-events';
-import { useIsRadioActive } from '/@/renderer/features/radio/hooks/use-radio-player';
 import { ComponentErrorBoundary } from '/@/renderer/features/shared/components/component-error-boundary';
 import { queryClient } from '/@/renderer/lib/react-query';
 import { useLyricsSettings, usePlayerSong } from '/@/renderer/store';
@@ -59,10 +58,6 @@ type LyricsProps = {
 
 export const Lyrics = ({ fadeOutNoLyricsMessage = true, settingsKey = 'default' }: LyricsProps) => {
     const currentSong = usePlayerSong();
-    const isRadioActive = useIsRadioActive();
-
-    const isLyricsDisabled = isRadioActive;
-
     const {
         delayMs,
         enableAutoTranslation,
@@ -115,15 +110,14 @@ export const Lyrics = ({ fadeOutNoLyricsMessage = true, settingsKey = 'default' 
         return queryKeys.songs.lyrics(currentSong._serverId, { songId: currentSong.id });
     }, [currentSong]);
 
-    const shouldFetchLyrics = !isLyricsDisabled && !!currentSong?._serverId && !!currentSong?.id;
+    const shouldFetchLyrics = !!currentSong?._serverId && !!currentSong?.id;
     const isWaitingToFetchLyrics = shouldFetchLyrics && pendingSongId !== currentSong?.id;
 
     const { data, isLoading, isRefetching } = useQuery(
         lyricsQueries.songLyrics(
             {
                 options: {
-                    enabled:
-                        !!pendingSongId && pendingSongId === currentSong?.id && !isLyricsDisabled,
+                    enabled: !!pendingSongId && pendingSongId === currentSong?.id,
                 },
                 query: { songId: currentSong?.id || '' },
                 serverId: currentSong?._serverId || '',
@@ -175,12 +169,12 @@ export const Lyrics = ({ fadeOutNoLyricsMessage = true, settingsKey = 'default' 
     }, [lyrics, synced]);
 
     const displayLyrics = useMemo(() => {
-        if (isLyricsDisabled || !lyrics) return null;
+        if (!lyrics) return null;
         if (enableFurigana && furiganaConvertedLyrics) {
             return { ...lyrics, lyrics: furiganaConvertedLyrics };
         }
         return lyrics;
-    }, [enableFurigana, isLyricsDisabled, lyrics, furiganaConvertedLyrics]);
+    }, [enableFurigana, lyrics, furiganaConvertedLyrics]);
 
     const currentOffsetMs = useMemo(() => {
         if (!data) return 0;
@@ -256,7 +250,7 @@ export const Lyrics = ({ fadeOutNoLyricsMessage = true, settingsKey = 'default' 
         return lyrics.agents;
     }, [lyrics]);
 
-    const displayOffsetMs = isLyricsDisabled ? 0 : currentOffsetMs;
+    const displayOffsetMs = currentOffsetMs;
     const useServerPronunciation = !!pronunciationLyricsOverlay;
 
     const shouldGenerateSyncedRomaji =
@@ -393,7 +387,7 @@ export const Lyrics = ({ fadeOutNoLyricsMessage = true, settingsKey = 'default' 
     }, [currentSong, lyricsKey]);
 
     const fetchTranslation = useCallback(async () => {
-        if (!lyrics || isLyricsDisabled) return;
+        if (!lyrics) return;
         const originalLyrics = Array.isArray(lyrics.lyrics)
             ? lyrics.lyrics.map((line) => getLyricLineText(line)).join('\n')
             : lyrics.lyrics;
@@ -405,13 +399,7 @@ export const Lyrics = ({ fadeOutNoLyricsMessage = true, settingsKey = 'default' 
         );
         setTranslatedLyrics(TranslatedText);
         setShowTranslation(true);
-    }, [
-        isLyricsDisabled,
-        lyrics,
-        translationApiKey,
-        translationApiProvider,
-        translationTargetLanguage,
-    ]);
+    }, [lyrics, translationApiKey, translationApiProvider, translationTargetLanguage]);
 
     const handleOnTranslateLyric = useCallback(async () => {
         if (translatedLyrics) {
@@ -499,10 +487,10 @@ export const Lyrics = ({ fadeOutNoLyricsMessage = true, settingsKey = 'default' 
     }, [isLoadingLyrics, hasNoLyrics, fadeOutNoLyricsMessage]);
 
     const handleExportLyrics = useCallback(() => {
-        if (lyrics && !isLyricsDisabled) {
+        if (lyrics) {
             openLyricsExportModal({ lyrics, offsetMs: currentOffsetMs, synced });
         }
-    }, [currentOffsetMs, isLyricsDisabled, lyrics, synced]);
+    }, [currentOffsetMs, lyrics, synced]);
 
     const handleOpenSettings = () => {
         openLyricsSettingsModal(settingsKey);
