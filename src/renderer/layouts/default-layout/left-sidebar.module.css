@@ -1,6 +1,6 @@
 .container {
     position: relative;
     grid-area: sidebar;
-    background: var(--theme-colors-background-alternate);
+    background: var(--app-background-alternate);
     border-right: 1px solid alpha(var(--theme-colors-border), 0.5);
 }

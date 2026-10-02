@@ -3,11 +3,11 @@
     grid-area: player;
 
     @mixin light {
-        background: darken(var(--theme-colors-background), 5%);
+        background: color-mix(in srgb, darken(var(--theme-colors-background), 5%) var(--app-opacity), transparent);
     }
 
     @mixin dark {
-        background: darken(var(--theme-colors-background), 10%);
+        background: color-mix(in srgb, darken(var(--theme-colors-background), 10%) var(--app-opacity), transparent);
     }
 
     transition: background 0.5s;
