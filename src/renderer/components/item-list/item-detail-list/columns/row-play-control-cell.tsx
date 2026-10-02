@@ -1,9 +1,7 @@
 import { ReactNode } from 'react';
 
-import { RowPlayControlPopover } from '../../row-play-control-popover';
 import styles from './row-play-control-cell.module.css';
 
-import { ItemRowPlayControls } from '/@/renderer/features/shared/components/item-row-play-controls';
 import { Play } from '/@/shared/types/types';
 
 export const ItemDetailRowPlayControlCell = ({
@@ -20,14 +18,15 @@ export const ItemDetailRowPlayControlCell = ({
     }
 
     return (
-        <div className={styles.cellWrapper}>
-            <RowPlayControlPopover
-                content={<ItemRowPlayControls onPlay={onPlay} />}
-                offset={{ crossAxis: 32, mainAxis: 16 }}
-                openDelay={300}
-            >
-                {indexContent}
-            </RowPlayControlPopover>
+        <div
+            className={styles.cellWrapper}
+            onClick={(e) => {
+                e.stopPropagation();
+                onPlay(Play.NOW);
+            }}
+            style={{ cursor: 'pointer' }}
+        >
+            {indexContent}
         </div>
     );
 };

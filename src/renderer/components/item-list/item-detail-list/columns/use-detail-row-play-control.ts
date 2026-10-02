@@ -2,10 +2,13 @@ import { useCallback } from 'react';
 
 import { ItemDetailListCellProps } from './types';
 
-import { playSongFromItemListControl } from '/@/renderer/components/item-list/helpers/play-row-from-list';
+import {
+    isSingleSongPlay,
+    playSongFromItemListControl,
+} from '/@/renderer/components/item-list/helpers/play-row-from-list';
 import { usePlayer } from '/@/renderer/features/player/context/player-context';
 import { useIsCurrentSong } from '/@/renderer/features/player/hooks/use-is-current-song';
-import { usePlayerStatus } from '/@/renderer/store';
+import { usePlayerStatus, usePlaySongAndRest } from '/@/renderer/store';
 import { Song } from '/@/shared/types/domain-types';
 import { Play, PlayerStatus } from '/@/shared/types/types';
 
@@ -16,6 +19,7 @@ export const useDetailRowPlayControl = ({
 }: Pick<ItemDetailListCellProps, 'internalState' | 'rowIndex' | 'song'>) => {
     const status = usePlayerStatus();
     const player = usePlayer();
+    const playSongAndRest = usePlaySongAndRest();
     const { isActive } = useIsCurrentSong(song);
     const isPlaying = isActive && status === PlayerStatus.PLAYING;
 
@@ -31,11 +35,11 @@ export const useDetailRowPlayControl = ({
                 index: rowIndex,
                 internalState,
                 item: song as Song,
-                meta: { playType, singleSongOnly: true },
+                meta: { playType, singleSongOnly: isSingleSongPlay(playType, playSongAndRest) },
                 player,
             });
         },
-        [internalState, player, rowIndex, song],
+        [internalState, playSongAndRest, player, rowIndex, song],
     );
 
     return {

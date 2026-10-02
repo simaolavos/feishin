@@ -1,7 +1,6 @@
 import clsx from 'clsx';
 import { ReactNode, useCallback } from 'react';
 
-import { RowPlayControlPopover } from '../../row-play-control-popover';
 import styles from './row-index-column.module.css';
 
 import {
@@ -10,7 +9,6 @@ import {
     TableColumnTextContainer,
 } from '/@/renderer/components/item-list/item-table-list/item-table-list-column';
 import { ItemListItem } from '/@/renderer/components/item-list/types';
-import { ItemRowPlayControls } from '/@/renderer/features/shared/components/item-row-play-controls';
 import { ActionIcon } from '/@/shared/components/action-icon/action-icon';
 import { Flex } from '/@/shared/components/flex/flex';
 import { Text } from '/@/shared/components/text/text';
@@ -69,8 +67,19 @@ export const RowPlayControlCell = (
         return <span className={hideOnHoverClass}>{indexContent}</span>;
     };
 
+    const handlePlayClick = useCallback(
+        (e: React.MouseEvent) => {
+            e.stopPropagation();
+            onPlay(Play.NOW);
+        },
+        [onPlay],
+    );
+
     const expansionTarget = (
-        <div className={styles.playTarget}>
+        <div
+            className={clsx(styles.playTarget, showPlayControls && styles.clickable)}
+            onClick={showPlayControls ? handlePlayClick : undefined}
+        >
             {getIndexDisplay(true)}
             <div className={clsx(styles.expand, 'hover-only')}>
                 <ActionIcon
@@ -87,15 +96,7 @@ export const RowPlayControlCell = (
     if (enableExpansion) {
         return (
             <TableColumnContainer {...props} className={styles.expansionCell}>
-                <div className={styles.expansionInner}>
-                    {showPlayControls ? (
-                        <RowPlayControlPopover content={<ItemRowPlayControls onPlay={onPlay} />}>
-                            {expansionTarget}
-                        </RowPlayControlPopover>
-                    ) : (
-                        expansionTarget
-                    )}
-                </div>
+                <div className={styles.expansionInner}>{expansionTarget}</div>
             </TableColumnContainer>
         );
     }
@@ -108,11 +109,14 @@ export const RowPlayControlCell = (
 
     return (
         <TableColumnTextContainer {...props} className={styles.fullSizeContent}>
-            <RowPlayControlPopover content={<ItemRowPlayControls onPlay={onPlay} />}>
-                <Flex className={styles.indexContent} justify="center" w="100%">
-                    {getIndexDisplay(false)}
-                </Flex>
-            </RowPlayControlPopover>
+            <Flex
+                className={clsx(styles.indexContent, styles.clickable)}
+                justify="center"
+                onClick={handlePlayClick}
+                w="100%"
+            >
+                {getIndexDisplay(false)}
+            </Flex>
         </TableColumnTextContainer>
     );
 };

@@ -24,6 +24,13 @@ interface PlayerQueueByFetchActions {
     ) => void;
 }
 
+export const isSingleSongPlay = (playType: Play, playSongAndRest: boolean) =>
+    !playSongAndRest ||
+    playType === Play.NEXT ||
+    playType === Play.LAST ||
+    playType === Play.NEXT_SHUFFLE ||
+    playType === Play.LAST_SHUFFLE;
+
 export const playSongFromItemListControl = ({
     index,
     internalState,

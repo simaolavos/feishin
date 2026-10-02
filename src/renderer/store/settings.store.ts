@@ -555,6 +555,7 @@ export const GeneralSettingsSchema = z.object({
     playerbarSlider: PlayerbarSliderSchema,
     playerItems: z.array(SortableItemSchema(PlayerItemSchema)),
     playlistTarget: PlaylistTargetSchema,
+    playSongAndRest: z.boolean(),
     primaryShade: z.number().min(0).max(9),
     qobuz: z.boolean(),
     resume: z.boolean(),
@@ -1369,6 +1370,7 @@ const initialState: SettingsState = {
         },
         playerItems,
         playlistTarget: PlaylistTarget.TRACK,
+        playSongAndRest: true,
         primaryShade: 6,
         qobuz: true,
         resume: true,
@@ -2921,6 +2923,8 @@ export const usePlaybackType = () => useSettingsStore((state) => state.playback.
 export const usePlayButtonBehavior = () =>
     useSettingsStore((state) => state.general.playButtonBehavior, shallow);
 
+export const usePlaySongAndRest = () =>
+    useSettingsStore((state) => state.general.playSongAndRest, shallow);
 export const useWindowSettings = () => useSettingsStore((state) => state.window, shallow);
 
 export const useWindowBarStyle = () =>

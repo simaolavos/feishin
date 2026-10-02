@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 
 import {
+    isSingleSongPlay,
     playAlbumFromItemListControl,
     playArtistFromItemListControl,
     playPlaylistFromItemListControl,
@@ -9,7 +10,12 @@ import {
 import { ItemTableListInnerColumn } from '/@/renderer/components/item-list/item-table-list/item-table-list-column';
 import { useIsActiveRow } from '/@/renderer/components/item-list/item-table-list/item-table-list-context';
 import { usePlayer } from '/@/renderer/features/player/context/player-context';
-import { useCurrentPlaylistContextId, usePlayerSong, usePlayerStatus } from '/@/renderer/store';
+import {
+    useCurrentPlaylistContextId,
+    usePlayerSong,
+    usePlayerStatus,
+    usePlaySongAndRest,
+} from '/@/renderer/store';
 import {
     Album,
     AlbumArtist,
@@ -54,6 +60,7 @@ export const useRowPlayControl = (props: ItemTableListInnerColumn) => {
     const currentSong = usePlayerSong();
     const activePlaylistId = useCurrentPlaylistContextId();
     const player = usePlayer();
+    const playSongAndRest = usePlaySongAndRest();
     const rowItem = props.getRowItem?.(props.rowIndex) ?? props.data[props.rowIndex];
     const song = rowItem as QueueSong;
     const album = rowItem as Album;
@@ -140,12 +147,24 @@ export const useRowPlayControl = (props: ItemTableListInnerColumn) => {
             }
 
             playSongFromItemListControl({
+                index: props.rowIndex,
+                internalState: props.internalState,
                 item: song as Song,
-                meta: { playType, singleSongOnly: true },
+                meta: { playType, singleSongOnly: isSingleSongPlay(playType, playSongAndRest) },
                 player,
             });
         },
-        [album, artist, player, playlist, props.itemType, song],
+        [
+            album,
+            artist,
+            playSongAndRest,
+            player,
+            playlist,
+            props.internalState,
+            props.itemType,
+            props.rowIndex,
+            song,
+        ],
     );
 
     return {

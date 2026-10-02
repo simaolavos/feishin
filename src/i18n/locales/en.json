@@ -1113,6 +1113,8 @@
         "playButtonBehavior_optionPlay": "$t(player.play)",
         "playButtonBehavior_optionPlayShuffled": "$t(player.shuffle)",
         "playButtonBehavior": "Play button behavior",
+        "playSongAndRest_description": "When playing a song from its row play button, also queue the rest of the list (album, playlist) after it",
+        "playSongAndRest": "Play song and rest of list",
         "artistRadioCount_description": "Sets the number of songs to fetch for artist radio and track radio",
         "artistRadioCount": "Artist/track radio count",
         "imageResolution": "Image resolution",
