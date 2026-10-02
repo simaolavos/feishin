@@ -8,7 +8,6 @@
     pointer-events: none;
     background: var(--app-sticky-background);
     opacity: 0;
-    backdrop-filter: blur(12px);
 }
 
 .container[data-visible='true'] {

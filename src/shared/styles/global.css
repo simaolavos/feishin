@@ -266,7 +266,7 @@ button {
 :root {
     /* App shell opacity: lower for a more see-through window (needs a frameless window bar style) */
     --app-opacity: 85%;
-    --app-sticky-background: color-mix(in srgb, var(--theme-colors-background) 45%, transparent);
+    --app-sticky-background: rgb(42 42 42 / 96%);
     --app-background: color-mix(in srgb, var(--theme-colors-background) var(--app-opacity), transparent);
     --theme-background-noise: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjc1IiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxwYXRoIGZpbHRlcj0idXJsKCNhKSIgb3BhY2l0eT0iLjA1IiBkPSJNMCAwaDMwMHYzMDBIMHoiLz48L3N2Zz4=');
     --theme-fullscreen-player-text-shadow: black 0px 0px 10px;
