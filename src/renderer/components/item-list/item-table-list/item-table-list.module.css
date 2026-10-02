@@ -54,8 +54,9 @@
     position: fixed !important;
     top: 65px;
     z-index: 15;
-    background-color: var(--theme-bg-primary);
+    background-color: var(--app-sticky-background);
     box-shadow: 0 -1px 0 0 var(--theme-colors-border);
+    backdrop-filter: blur(12px);
     transition: position 0.2s ease-in-out;
 }
 
@@ -74,8 +75,9 @@
     flex-direction: row;
     overflow: visible;
     pointer-events: none;
-    background-color: var(--theme-colors-background);
+    background-color: var(--app-sticky-background);
     border-bottom: 1px solid var(--theme-colors-border);
+    backdrop-filter: blur(12px);
 }
 
 .sticky-header-row {
@@ -99,8 +101,9 @@
     padding: 0;
     margin: 0;
     pointer-events: none;
-    background-color: var(--theme-colors-background);
+    background-color: var(--app-sticky-background);
     border-bottom: 1px solid var(--theme-colors-border);
+    backdrop-filter: blur(12px);
 }
 
 .sticky-group-row-content {
