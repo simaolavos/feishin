@@ -1,6 +1,12 @@
 .container {
     position: relative;
     grid-area: sidebar;
-    background: var(--app-background-alternate);
+    background: rgb(0 0 0 / 25%);
+
+    /* Let the sidebar contents show the window transparency instead of opaque boxes */
+    --theme-colors-background: transparent;
+    --theme-colors-background-alternate: transparent;
+    --theme-colors-surface: rgb(255 255 255 / 6%);
+
     border-right: 1px solid alpha(var(--theme-colors-border), 0.5);
 }

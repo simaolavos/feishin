@@ -6,7 +6,7 @@
     height: 65px;
     overflow: hidden;
     pointer-events: none;
-    background: var(--theme-colors-background);
+    background: var(--app-sticky-background);
     opacity: 0;
 }
 
