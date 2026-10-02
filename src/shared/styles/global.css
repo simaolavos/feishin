@@ -29,7 +29,7 @@ html {
     font-size: var(--theme-root-font-size);
     font-variant-numeric: tabular-nums;
     color: var(--theme-colors-foreground);
-    background: var(--app-background);
+    background: transparent;
 }
 
 input,
