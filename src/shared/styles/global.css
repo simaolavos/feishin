@@ -29,7 +29,9 @@ html {
     font-size: var(--theme-root-font-size);
     font-variant-numeric: tabular-nums;
     color: var(--theme-colors-foreground);
-    background: transparent;
+
+    /* Overrides Mantine's body background; the layout panels carry the tint instead */
+    background-color: transparent !important;
 }
 
 input,
