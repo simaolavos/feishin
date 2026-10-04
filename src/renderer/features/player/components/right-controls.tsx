@@ -3,8 +3,6 @@ import { useCallback, useEffect, useMemo, useState, WheelEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { PopoverPlayQueue } from '/@/renderer/features/now-playing/components/popover-play-queue';
-import { DlnaCastButton } from '/@/renderer/features/player/components/dlna-cast-button';
-import { DlnaVolumeButton } from '/@/renderer/features/player/components/dlna/volume-button';
 import { PlayerConfig } from '/@/renderer/features/player/components/player-config';
 import { CustomPlayerbarSlider } from '/@/renderer/features/player/components/playerbar-slider';
 import { SleepTimerButton } from '/@/renderer/features/player/components/sleep-timer-button';
@@ -88,7 +86,6 @@ const calculateVolumeDown = (volume: number, volumeWheelStep: number) => {
 export const RightControls = () => {
     const showRatings = useShowRatings();
     const showFavorites = useShowFavorites();
-    const playbackType = usePlaybackType();
     return (
         <Flex align="flex-end" direction="column" h="100%" px="1rem" py="0.5rem">
             <Group h="calc(100% / 3)">
@@ -96,13 +93,12 @@ export const RightControls = () => {
                 <AutoDJButton />
             </Group>
             <Group align="center" gap="xs" wrap="nowrap">
-                <DlnaCastButton />
                 <SleepTimerButton />
                 <PlayerConfig />
                 <LyricsButton />
                 {showFavorites && <FavoriteButton />}
                 <QueueButton />
-                {playbackType === PlayerType.DLNA ? <DlnaVolumeButton /> : <VolumeButton />}
+                <VolumeButton />
             </Group>
             <Group h="calc(100% / 3)" />
         </Flex>

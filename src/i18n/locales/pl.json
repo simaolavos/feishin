@@ -1623,53 +1623,5 @@
         "systemAudioCaptureFailed": "Nie udało się rozpocząć przechwytywania: {{message}}",
         "systemAudioNoAudioTrack": "Nie została zwrócona żadna ścieżka audio. Sprawdź czy przechwytywanie audio będzie włączone, gdy będzie o to prośba.",
         "systemAudioExclusiveModeNotSupported": "Wizualizer jest niedostępny w gdy tryb wyłącznie z dźwiękiek jest włączony. Wyłącz tryb wyłącznie audio w ustawieniach MPV i spróbuj ponownie."
-    },
-    "dlna": {
-        "castToDevice": "Przesyłanie do urządzenia DLNA",
-        "castingToDevice": "Przesyłanie do {{name}}",
-        "castingToGroup": "Przesyłanie do grupy {{count}}",
-        "connected": "połączono",
-        "connecting": "Łączenie…",
-        "createGroup": "Utwórz grupę",
-        "devices": "Urządzenia DLNA",
-        "disconnect": "Rozłącz",
-        "disconnectAndContinue": "Rozłącz i kontynuuj",
-        "noDevicesFound": "Nie znaleziono urządzeń DLNA",
-        "nowCasting": "Aktualnie przesyłam",
-        "searching": "Szukanie urządzeń…",
-        "shiftDisconnectHint": "Przytrzymaj Shift i wciśnij Rozłącz, aby dalej odtwarzać na głośniku",
-        "group": {
-            "add": "Dodaj",
-            "addSpeaker": "Dodaj głośnik",
-            "addSpeakers": "Dodaj głośniki",
-            "addToGroup": "Dodaj do grupy",
-            "cancel": "Anuluj",
-            "connect": "Połącz",
-            "coordinator": "koordynator",
-            "failedToAddMessage": "Nie można dodać {{name}}. Może nie być w tym samym systemie Sonos.",
-            "failedToAddTitle": "Nie udało się dodać głośnika",
-            "firstSelectedIsCoordinator": "Pierwszy wybrany = koordynator",
-            "noSonosFound": "Nie znaleziono urządzeń Sonos",
-            "refresh": "Odśwież",
-            "remove": "Usuń",
-            "searching": "Szukanie…",
-            "selectSpeakers": "Wybierz głośniki grupy",
-            "title": "Grupa ({{count}} głośników)"
-        },
-        "speakerProperties": {
-            "bass": "Bas",
-            "crossfade": "Przejście",
-            "ledState": "Dioda stanu",
-            "loadFailed": "Nie udało się załadować właściwości",
-            "loading": "Ładowanie…",
-            "longPressHint": "Wciśnij długo dla właściwości głośnika",
-            "loudness": "Głośność",
-            "touchControls": "Sterowanie dotykowe",
-            "treble": "Wysokie tony"
-        },
-        "volume": {
-            "groupControl": "Przytrzymaj Shift, aby zmodyfikować indywidualne głośności głośników",
-            "individualControl": "Puść Shift, aby zmodyfikować głośność wszystkich głośników"
-        }
     }
 }

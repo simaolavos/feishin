@@ -1623,53 +1623,5 @@
                 "z": "Z"
             }
         }
-    },
-    "dlna": {
-        "castToDevice": "Транслювати на пристрій DLNA",
-        "castingToDevice": "Транслювання на {{name}}",
-        "castingToGroup": "Транслювання на групу ({{count}})",
-        "connected": "підключено",
-        "connecting": "Підключення…",
-        "createGroup": "Створити групу",
-        "devices": "Пристрої DLNA",
-        "disconnect": "Відключити",
-        "disconnectAndContinue": "Відключити і продовжити",
-        "noDevicesFound": "Пристроїв DLNA не знайдено",
-        "nowCasting": "Зараз транслюється",
-        "searching": "Пошук пристроїв…",
-        "shiftDisconnectHint": "Утримуйте Shift і натисніть «Відключити», щоб продовжити відтворення на динаміку",
-        "group": {
-            "add": "Додати",
-            "addSpeaker": "Додати динамік",
-            "addSpeakers": "Додати динаміки",
-            "addToGroup": "Додати до групи",
-            "cancel": "Скасувати",
-            "connect": "Підключити",
-            "coordinator": "координатор",
-            "failedToAddMessage": "Не вдалося додати {{name}}. Можливо, він не в тій самій системі Sonos.",
-            "failedToAddTitle": "Не вдалося додати динамік",
-            "firstSelectedIsCoordinator": "Перший вибраний = координатор",
-            "noSonosFound": "Пристроїв Sonos не знайдено",
-            "refresh": "Оновити",
-            "remove": "Видалити",
-            "searching": "Пошук…",
-            "selectSpeakers": "Виберіть динаміки групи",
-            "title": "Група (К-сть динаміків: {{count}})"
-        },
-        "speakerProperties": {
-            "bass": "Баси",
-            "crossfade": "Плавний перехід",
-            "ledState": "Індикатор стану",
-            "loadFailed": "Не вдалося завантажити властивості",
-            "loading": "Завантаження…",
-            "longPressHint": "Довге натискання для відкриття властивостей динаміка",
-            "loudness": "Тонкомпенсація",
-            "touchControls": "Сенсорне керування",
-            "treble": "Високі частоти"
-        },
-        "volume": {
-            "groupControl": "Утримуйте Shift, щоб змінити гучність окремих динаміків",
-            "individualControl": "Відпустіть Shift, щоб змінити гучність усіх динаміків"
-        }
     }
 }

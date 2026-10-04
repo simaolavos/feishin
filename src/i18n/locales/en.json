@@ -1438,54 +1438,6 @@
             }
         }
     },
-    "dlna": {
-        "castToDevice": "Cast to DLNA device",
-        "castingToDevice": "Casting to {{name}}",
-        "castingToGroup": "Casting to group ({{count}})",
-        "connected": "connected",
-        "connecting": "Connecting…",
-        "createGroup": "Create Group",
-        "devices": "DLNA Devices",
-        "disconnect": "Disconnect",
-        "disconnectAndContinue": "Disconnect and Continue",
-        "noDevicesFound": "No DLNA devices found",
-        "nowCasting": "Now casting",
-        "searching": "Searching for devices…",
-        "shiftDisconnectHint": "Hold Shift and press Disconnect to keep playing on the speaker",
-        "group": {
-            "add": "Add",
-            "addSpeaker": "Add Speaker",
-            "addSpeakers": "Add Speakers",
-            "addToGroup": "Add to Group",
-            "cancel": "Cancel",
-            "connect": "Connect",
-            "coordinator": "coordinator",
-            "failedToAddMessage": "Cannot add {{name}}. It might not be in the same Sonos system.",
-            "failedToAddTitle": "Failed to Add Speaker",
-            "firstSelectedIsCoordinator": "First selected = coordinator",
-            "noSonosFound": "No Sonos devices found",
-            "refresh": "Refresh",
-            "remove": "Remove",
-            "searching": "Searching…",
-            "selectSpeakers": "Select Group Speakers",
-            "title": "Group ({{count}} speakers)"
-        },
-        "speakerProperties": {
-            "bass": "Bass",
-            "crossfade": "Crossfade",
-            "ledState": "Status Light",
-            "loadFailed": "Could not load properties",
-            "loading": "Loading…",
-            "longPressHint": "Long press for speaker properties",
-            "loudness": "Loudness",
-            "touchControls": "Touch Controls",
-            "treble": "Treble"
-        },
-        "volume": {
-            "groupControl": "Hold Shift to modify individual speaker volumes",
-            "individualControl": "Release Shift to modify all speaker volumes"
-        }
-    },
     "dragDropZone": {
         "error_oneFileOnly": "Please only select 1 file",
         "error_readingFile": "There has been an issue reading the file: {{errorMessage}}",

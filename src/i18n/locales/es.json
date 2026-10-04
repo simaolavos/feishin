@@ -1623,53 +1623,5 @@
         "systemAudioCaptureFailed": "No se pudo iniciar la captura: {{message}}",
         "systemAudioNoAudioTrack": "Ninguna pista de audio devuelta. Asegúrate de que la captura de audio está activada cuando se solicite.",
         "systemAudioExclusiveModeNotSupported": "El visualizador no está disponible mientras el modo de audio exclusivo esté activado. Desactiva el modo de audio exclusivo en la configuración de MPV e inténtalo de nuevo."
-    },
-    "dlna": {
-        "castToDevice": "Emitir a dispositivo DLNA",
-        "castingToDevice": "Emitir a {{name}}",
-        "castingToGroup": "Emitiendo al grupo ({{count}})",
-        "connected": "Conectado",
-        "connecting": "Conectando…",
-        "createGroup": "Crear grupo",
-        "devices": "Dispositivos DLNA",
-        "disconnect": "Desconectar",
-        "disconnectAndContinue": "Desconectar y continuar",
-        "noDevicesFound": "Ningún dispositivo DLNA encontrado",
-        "nowCasting": "Emitiendo ahora",
-        "searching": "Buscando dispositivos…",
-        "group": {
-            "add": "Añadir",
-            "addSpeaker": "Añadir altavoz",
-            "addSpeakers": "Añadir altavoces",
-            "addToGroup": "Añadir al grupo",
-            "cancel": "Cancelar",
-            "connect": "Conectar",
-            "coordinator": "Coordinador",
-            "failedToAddMessage": "No se puede añadir{{name}}. Podría no estar en el mismo sistema Sonos.",
-            "failedToAddTitle": "Error al añadir altavoz",
-            "firstSelectedIsCoordinator": "Primero seleccionado = coordinador",
-            "noSonosFound": "Ningún dispositivo Sonos encontrado",
-            "refresh": "Actualizar",
-            "remove": "Eliminar",
-            "searching": "Buscando…",
-            "selectSpeakers": "Seleccionar grupo de altavoces",
-            "title": "Grupo ({{count}} altavoces)"
-        },
-        "shiftDisconnectHint": "Mantén Shift y pulsa Desconectar para mantener la reproducción en el altavoz",
-        "speakerProperties": {
-            "bass": "Bajos",
-            "crossfade": "Crossfade",
-            "ledState": "Luz de estado",
-            "loadFailed": "No se pudieron cargar las propiedades",
-            "loading": "Cargando…",
-            "longPressHint": "Pulsación larga para las propiedades del altavoz",
-            "loudness": "Intensidad sonora",
-            "touchControls": "Controles de toque",
-            "treble": "Agudos"
-        },
-        "volume": {
-            "groupControl": "Mantener Shift para modificar los volúmenes individuales del altavoz",
-            "individualControl": "Soltar Shift para modificar todos los volúmenes del altavoz"
-        }
     }
 }

@@ -1573,30 +1573,5 @@
         "systemAudioCaptureFailed": "キャプチャを開始できませんでした: {{message}}",
         "systemAudioNoAudioTrack": "音声トラックが返されませんでした。プロンプトが表示されたら、音声キャプチャが有効になっていることを確認してください。",
         "systemAudioExclusiveModeNotSupported": "オーディオ排他モードが有効になっている間は、ビジュアライザーは利用できません。MPV の設定でオーディオ排他モードを無効にしてから、もう一度お試しください。"
-    },
-    "dlna": {
-        "castToDevice": "DLNA デバイスにキャスト",
-        "castingToDevice": "{{name}} にキャストします",
-        "castingToGroup": "グループ {{count}} にキャストします",
-        "connected": "接続済み",
-        "connecting": "接続中…",
-        "createGroup": "グループを作成",
-        "devices": "DLNA デバイス",
-        "disconnect": "切断",
-        "disconnectAndContinue": "接続を解除して続行",
-        "noDevicesFound": "DLNA デバイスが見つかりませんでした",
-        "nowCasting": "現在キャスト中",
-        "searching": "デバイスを検索中…",
-        "shiftDisconnectHint": "Shift キーを押したまま「切断」を押すと、スピーカーで再生を続けることができます",
-        "group": {
-            "add": "追加",
-            "addSpeaker": "スピーカーを追加",
-            "addSpeakers": "スピーカーを追加",
-            "addToGroup": "グループに追加",
-            "cancel": "キャンセル",
-            "connect": "接続",
-            "coordinator": "コーディネーター",
-            "failedToAddMessage": "{{name}} を追加できません。同じ Sonos システムに属していない可能性があります。"
-        }
     }
 }

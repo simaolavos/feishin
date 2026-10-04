@@ -1623,53 +1623,5 @@
         "systemAudioCaptureFailed": "No s'ha pogut iniciar la captura: {{message}}",
         "systemAudioNoAudioTrack": "No s'ha tornat cap pista d'àudio. Comproveu que la captura d'àudio estigui activada quan se sol·liciti.",
         "systemAudioExclusiveModeNotSupported": "El visualitzador no està disponible amb el mode d'àudio exclusiu activat. Desactiveu-lo a la configuració d'MPV i torneu-ho a intentar."
-    },
-    "dlna": {
-        "castToDevice": "Transmet a un dispositiu DLNA",
-        "castingToDevice": "Transmetent a {{name}}",
-        "castingToGroup": "Transmetent al grup ({{count}})",
-        "connected": "connectat",
-        "connecting": "Connectant…",
-        "createGroup": "Crea un grup",
-        "devices": "Dispositius DLNA",
-        "disconnect": "Desconnecta",
-        "disconnectAndContinue": "Desconnecta i continua",
-        "noDevicesFound": "No s'ha trobat cap dispositiu DLNA",
-        "nowCasting": "Transmetent ara",
-        "searching": "Buscant dispositius…",
-        "shiftDisconnectHint": "Mantén shift premut i prem desconnectar per mantenir la reproducció a l'altaveu",
-        "group": {
-            "add": "Afegir",
-            "addSpeaker": "Afegir altaveu",
-            "addSpeakers": "Afegir altaveus",
-            "addToGroup": "Afegir al grup",
-            "cancel": "Cancel·la",
-            "connect": "Connecta",
-            "coordinator": "coordinador",
-            "failedToAddMessage": "No es pot afegir {{name}}. Potser no està al mateix sistema Sonos.",
-            "failedToAddTitle": "Error en afegir l'altaveu",
-            "firstSelectedIsCoordinator": "Primer seleccionat = coordinador",
-            "noSonosFound": "No s'han trobat dispositius Sonos",
-            "refresh": "Refresca",
-            "remove": "Elimina",
-            "searching": "Buscant…",
-            "selectSpeakers": "Selecciona grup d'altaveus",
-            "title": "Grup ({{count}} altaveus)"
-        },
-        "speakerProperties": {
-            "bass": "Baix",
-            "crossfade": "Fosa encadenada",
-            "ledState": "Llum d'estat",
-            "loadFailed": "No s'han pogut carregar les propietats",
-            "loading": "Carregant…",
-            "longPressHint": "Mantén premut per a les propietats de l'altaveu",
-            "loudness": "Potència acústica",
-            "touchControls": "Controls tàctils",
-            "treble": "To agut"
-        },
-        "volume": {
-            "groupControl": "Mantén shift premut per modificar individualment els volums dels altaveus",
-            "individualControl": "Deixa anar el shift per modificar tots els volums dels altaveus"
-        }
     }
 }
