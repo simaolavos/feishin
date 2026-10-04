@@ -45,6 +45,15 @@ Then copy `dist/mac-arm64/Feishin.app` to `/Applications`. The app is unsigned, 
 
 For Navidrome, tick "Save password" and raise `SessionTimeout` in the Navidrome config (e.g. `72h`).
 
+### Casting
+
+Click the cast icon in the player bar, pick a device, and playback moves to it at the current position. Disconnect to continue on the computer.
+
+- Desktop app only. On macOS, allow the "find devices on your local network" prompt the first time.
+- The device fetches the stream itself, so the server URL must be reachable from it. `localhost` and LAN-only `http` hostnames are rewritten to IP addresses; a LAN-only `https` hostname will not work.
+- MP3, AAC, FLAC, Opus, Vorbis and WAV play directly. Enable transcoding in playback settings for anything else (ALAC, WMA, DSD).
+- No gapless playback or playback speed control on the device.
+
 More docs: [custom themes](docs/CUSTOM_THEMES.md), [settings via environment variables](docs/ENV_SETTINGS.md).
 
 ## Development

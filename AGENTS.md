@@ -33,6 +33,14 @@ Wrapped UI lives under `/@/shared/components` and `/@/shared/hooks`. Read `docs/
 
 Renderer UI (imports, composition, CSS Modules, theme, i18n/icons/toasts/modals, Zustand): read `docs/agents/frontend.md` when writing or changing frontend UI, styles, or client state.
 
+### Casting
+
+Google Cast only (DLNA was removed). Main: `src/main/features/core/cast` (mDNS discovery, `castv2-client`). Bridge: `src/preload/cast-player.ts`. Renderer: `features/player/audio-player/cast-player.tsx` (engine for `PlayerType.CAST`) and `features/player/components/cast-button.tsx`.
+
+- The player bar remounts when the window crosses the mobile breakpoint (e.g. minimised by a tiling window manager). Session state that must survive that lives in `audio-player/engine/player-handoff.ts`, not in component state or mount effects.
+- `setSettings` deep-merges and skips `undefined`, so it cannot clear a field. Clear with `useSettingsStore.setState((state) => { ... })`.
+- Leaving `PlayerType.CAST` must stop the device first, or both play at once.
+
 ### Logging
 
 App logging (renderer `logger` / main `log`): read `docs/agents/logging.md` when adding or changing diagnosable code paths — failures, fallbacks, engine/connection lifecycle.
@@ -40,6 +48,10 @@ App logging (renderer `logger` / main `log`): read `docs/agents/logging.md` when
 ### Commits
 
 Conventional Commits + allowed scopes: read `docs/agents/commits.md` when writing a commit message. Enforced by commitlint in CI.
+
+### Local install
+
+To build and install the macOS app: packaging command and icon override are in `README.md` ("Getting started"). Quit the running app before replacing `/Applications/Feishin.app`.
 
 ## Working mode
 
