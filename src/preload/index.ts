@@ -2,6 +2,7 @@ import { contextBridge, webUtils } from 'electron';
 
 import { autodiscover } from './autodiscover';
 import { browser } from './browser';
+import { castPlayer, castPlayerListener } from './cast-player';
 import { customThemes } from './custom-themes';
 import { discordRpc } from './discord-rpc';
 import { ipc } from './ipc';
@@ -17,6 +18,8 @@ import { visualizer } from './visualizer';
 const api = {
     autodiscover,
     browser,
+    castPlayer,
+    castPlayerListener,
     customThemes,
     discordRpc,
     getPathForFile: webUtils.getPathForFile,

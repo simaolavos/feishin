@@ -158,6 +158,7 @@ export enum PlayerStyle {
 }
 
 export enum PlayerType {
+    CAST = 'cast',
     JUKEBOX = 'jukebox',
     LOCAL = 'local',
     WEB = 'web',

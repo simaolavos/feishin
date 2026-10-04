@@ -45,6 +45,17 @@
             "spotify": "Open in Spotify"
         }
     },
+    "cast": {
+        "castToDevice": "Cast to device",
+        "castingTo": "Casting to {{name}}",
+        "connecting": "Connecting…",
+        "connectionFailed": "Could not connect to {{name}}",
+        "connectionLost": "Connection to the cast device was lost",
+        "disconnect": "Disconnect",
+        "noDevicesFound": "No cast devices found",
+        "playbackFailed": "The cast device could not play this track",
+        "searching": "Searching for devices…"
+    },
     "common": {
         "countSelected": "{{count}} selected",
         "explicitStatus": "Explicit status",

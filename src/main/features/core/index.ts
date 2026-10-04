@@ -1,4 +1,5 @@
 import './autodiscover';
+import './cast';
 import './custom-themes';
 import './lyrics';
 import './player';

@@ -250,6 +250,7 @@ const AudioPlayerTypeConfig = () => {
     const { mediaStop } = usePlayer();
 
     const showRefreshButton = playbackSettings.type === PlayerType.LOCAL;
+    const isCasting = playbackSettings.type === PlayerType.CAST;
 
     return (
         <Group gap="xs" wrap="nowrap">
@@ -263,9 +264,12 @@ const AudioPlayerTypeConfig = () => {
                     },
                     { label: 'Web', value: PlayerType.WEB },
                     { label: 'Jukebox', value: PlayerType.JUKEBOX },
+                    ...(isCasting
+                        ? [{ disabled: true, label: 'Cast', value: PlayerType.CAST }]
+                        : []),
                 ]}
                 defaultValue={playbackSettings.type}
-                disabled={status === PlayerStatus.PLAYING}
+                disabled={status === PlayerStatus.PLAYING || isCasting}
                 onChange={(e) => {
                     setSettings({
                         playback: { ...playbackSettings, type: e as PlayerType },

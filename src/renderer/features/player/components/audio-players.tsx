@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { eventEmitter } from '/@/renderer/events/event-emitter';
 import { UserFavoriteEventPayload, UserRatingEventPayload } from '/@/renderer/events/events';
 import { DiscordRpcHook } from '/@/renderer/features/discord-rpc/use-discord-rpc';
+import { CastPlayer } from '/@/renderer/features/player/audio-player/cast-player';
 import { MainPlayerListenerHook } from '/@/renderer/features/player/audio-player/hooks/use-main-player-listener';
 import { JukeboxPlayer } from '/@/renderer/features/player/audio-player/jukebox-player';
 import { MpvPlayer } from '/@/renderer/features/player/audio-player/mpv-player';
@@ -27,6 +28,7 @@ import { RemoteHook } from '/@/renderer/features/remote/hooks/use-remote';
 import { RemoteLibraryHook } from '/@/renderer/features/remote/hooks/use-remote-library';
 import { RemoteQueuePushHook } from '/@/renderer/features/remote/hooks/use-remote-queue-push';
 import { RemoteSettingsPushHook } from '/@/renderer/features/remote/hooks/use-remote-settings-push';
+import { ComponentErrorBoundary } from '/@/renderer/features/shared/components/component-error-boundary';
 import { VisualizerSystemAudioBridgeHook } from '/@/renderer/features/visualizer/components/visualizer-system-audio-bridge';
 import { useSettingsStore } from '/@/renderer/store';
 import {
@@ -363,6 +365,14 @@ const AudioPlayersContent = ({
 
     if (playbackType === PlayerType.WEB) {
         return <WebPlayer />;
+    }
+
+    if (playbackType === PlayerType.CAST) {
+        return (
+            <ComponentErrorBoundary>
+                <CastPlayer />
+            </ComponentErrorBoundary>
+        );
     }
 
     if (playbackType === PlayerType.JUKEBOX) {
