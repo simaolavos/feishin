@@ -11,6 +11,7 @@ A personal, trimmed-down fork of [Feishin](https://github.com/jeffvli/feishin), 
 - **Click a track number to play it.** The hover popup (play now / next / last) is gone. Right-click a row for those options and more.
 - **Play song and rest of list.** New setting (Settings > Controls) that queues the rest of the list after the song you play.
 - **Translucent window.** Frameless bar styles use a transparent window, with translucent sidebar, sticky headers, settings, modals and mobile layout.
+- **Google Cast.** The cast button in the player bar plays to Chromecast, Google Home / Nest devices and speaker groups. It replaces upstream's DLNA casting, so Sonos and other DLNA-only renderers are not supported.
 - **Less bloat.** Genre browsing, internet radio and the home carousel are removed.
 
 Everything else (MPV and web player backends, scrobbling, lyrics, smart playlist editor for Navidrome) is inherited from upstream.
