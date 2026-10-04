@@ -106,6 +106,8 @@ export function CastPlayer() {
 
     useEffect(() => {
         if (status === PlayerStatus.PLAYING) void load();
+        // Whatever takes over when this unmounts plays locally; never leave both playing
+        return reset;
         // Only run on mount
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

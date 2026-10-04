@@ -2,7 +2,7 @@ import isElectron from 'is-electron';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { playerHandoff } from '../audio-player/engine/player-handoff';
+import { playerHandoff, setCastDeviceName } from '../audio-player/engine/player-handoff';
 
 import {
     usePlaybackSettings,
@@ -37,7 +37,7 @@ export const CastButton = () => {
     const [devices, setDevices] = useState<CastDevice[]>([]);
     const [isSearching, setIsSearching] = useState(false);
     const [isConnecting, setIsConnecting] = useState(false);
-    const [deviceName, setDeviceName] = useState('');
+    const [deviceName, setDeviceName] = useState(playerHandoff.castDeviceName);
 
     const isCasting = type === PlayerType.CAST;
 
@@ -46,6 +46,7 @@ export const CastButton = () => {
         (resumeAtCastPosition: boolean) => {
             const { previousLocalVolume, previousPlayerType } =
                 useSettingsStore.getState().playback;
+            setCastDeviceName('');
             if (resumeAtCastPosition) {
                 const timestamp = useTimestampStoreBase.getState().timestamp;
                 if (timestamp > 0) playerHandoff.pendingLocalSeek = timestamp;
@@ -63,11 +64,12 @@ export const CastButton = () => {
         [setVolume],
     );
 
-    // The connection does not survive a restart; neither does a player type that no longer exists
+    // The connection does not survive a restart; neither does a player type that no longer exists.
+    // The player bar can remount mid-session, so only reset when no device is connected.
     useEffect(() => {
         const persistedType = useSettingsStore.getState().playback.type;
         if (
-            persistedType === PlayerType.CAST ||
+            (persistedType === PlayerType.CAST && !playerHandoff.castDeviceName) ||
             !Object.values(PlayerType).includes(persistedType)
         ) {
             restoreLocalPlayer(false);
@@ -107,6 +109,7 @@ export const CastButton = () => {
             toast.error({ message: t('cast.connectionFailed', { name: device.name }) });
             return;
         }
+        setCastDeviceName(device.name);
         setDeviceName(device.name);
         // Adopt the device's volume first so mounting the cast player does not change it
         setVolume(result.volume);
