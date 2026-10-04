@@ -115,11 +115,11 @@ export const AudioSettings = memo(() => {
     const currentServer = useCurrentServer();
     const isJukeboxSupported = hasFeature(currentServer, ServerFeature.JUKEBOX);
     const showRefreshButton = settings.type === PlayerType.LOCAL;
+    const isCasting = settings.type === PlayerType.CAST;
 
     const audioDevices = useAudioDevices(playbackType);
     const audioDeviceId =
         playbackType === PlayerType.LOCAL ? settings.mpvAudioDeviceId : settings.audioDeviceId;
-    const isCasting = settings.type === PlayerType.DLNA;
 
     // Dynamically build the options for the dropdown
     const selectData = [
@@ -136,7 +136,7 @@ export const AudioSettings = memo(() => {
     }
 
     if (isCasting) {
-        selectData.push({ disabled: true, label: 'DLNA', value: PlayerType.DLNA });
+        selectData.push({ disabled: true, label: 'Cast', value: PlayerType.CAST });
     }
 
     const audioOptions: SettingOption[] = [

@@ -1621,53 +1621,5 @@
         "systemAudioNoAudioTrack": "Nebyla zachycena žádná zvuková stopa. Ujistěte se, že jste při výzvě povolili zachytávání zvuku.",
         "systemAudioConsentDecline": "Zamítnout",
         "systemAudioExclusiveModeNotSupported": "Vizualizér není dostupný při zapnutém režimu výhradního výstupu zvuku. Zakažte Režim výhradního výstupu zvuku v nastavení MPV a zkuste to znovu."
-    },
-    "dlna": {
-        "castToDevice": "Vysílat do zařízení DLNA",
-        "castingToDevice": "Vysílání do zařízení {{name}}",
-        "castingToGroup": "Vysílání do skupiny ({{count}})",
-        "connected": "připojeno",
-        "connecting": "Připojování…",
-        "createGroup": "Vytvořit skupinu",
-        "devices": "Zařízení DLNA",
-        "disconnect": "Odpojit",
-        "disconnectAndContinue": "Odpojit a pokračovat",
-        "noDevicesFound": "Nenalezena žádná zařízení DLNA",
-        "nowCasting": "Probíhá vysílání",
-        "searching": "Hledání zařízení…",
-        "shiftDisconnectHint": "Podržte Shift a klikněte na Odpojit pro pokračování v přehrávání v reproduktoru",
-        "group": {
-            "add": "Přidat",
-            "addSpeaker": "Přidat reproduktor",
-            "addSpeakers": "Přidat reproduktory",
-            "addToGroup": "Přidat do skupiny",
-            "cancel": "Zrušit",
-            "connect": "Připojit se",
-            "coordinator": "koordinátor",
-            "failedToAddMessage": "Nepodařilo se přidat zařízení {{name}}. Možná není ve stejném systému Sonos.",
-            "failedToAddTitle": "Nepodařilo se přidat reproduktor",
-            "firstSelectedIsCoordinator": "První vybrané = koordinátor",
-            "noSonosFound": "Nenalezena žádná zařízení Sonos",
-            "refresh": "Obnovit",
-            "remove": "Odstranit",
-            "searching": "Hledání…",
-            "selectSpeakers": "Vyberte skupinové reproduktory",
-            "title": "Skupina ({{count}} reproduktorů)"
-        },
-        "speakerProperties": {
-            "bass": "Basy",
-            "crossfade": "Prolínání",
-            "ledState": "Stavová dioda",
-            "loadFailed": "Nepodařilo se načíst vlastnosti",
-            "loading": "Načítání…",
-            "longPressHint": "Podržte pro vlastnosti reproduktoru",
-            "loudness": "Hlasitost",
-            "touchControls": "Dotykové ovládání",
-            "treble": "Výšky"
-        },
-        "volume": {
-            "groupControl": "Podržte Shift pro úpravu hlasitosti jednotlivých reproduktorů",
-            "individualControl": "Pusťte Shift pro úpravu hlasitosti všech reproduktorů"
-        }
     }
 }

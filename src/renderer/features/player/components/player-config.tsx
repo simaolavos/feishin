@@ -250,8 +250,7 @@ const AudioPlayerTypeConfig = () => {
     const { mediaStop } = usePlayer();
 
     const showRefreshButton = playbackSettings.type === PlayerType.LOCAL;
-
-    const isCasting = playbackSettings.type === PlayerType.DLNA;
+    const isCasting = playbackSettings.type === PlayerType.CAST;
 
     return (
         <Group gap="xs" wrap="nowrap">
@@ -266,7 +265,7 @@ const AudioPlayerTypeConfig = () => {
                     { label: 'Web', value: PlayerType.WEB },
                     { label: 'Jukebox', value: PlayerType.JUKEBOX },
                     ...(isCasting
-                        ? [{ disabled: true, label: 'DLNA', value: PlayerType.DLNA }]
+                        ? [{ disabled: true, label: 'Cast', value: PlayerType.CAST }]
                         : []),
                 ]}
                 defaultValue={playbackSettings.type}

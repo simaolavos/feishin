@@ -158,7 +158,7 @@ export enum PlayerStyle {
 }
 
 export enum PlayerType {
-    DLNA = 'dlna',
+    CAST = 'cast',
     JUKEBOX = 'jukebox',
     LOCAL = 'local',
     WEB = 'web',

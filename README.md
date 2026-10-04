@@ -11,6 +11,7 @@ A personal, trimmed-down fork of [Feishin](https://github.com/jeffvli/feishin), 
 - **Click a track number to play it.** The hover popup (play now / next / last) is gone. Right-click a row for those options and more.
 - **Play song and rest of list.** New setting (Settings > Controls) that queues the rest of the list after the song you play.
 - **Translucent window.** Frameless bar styles use a transparent window, with translucent sidebar, sticky headers, settings, modals and mobile layout.
+- **Google Cast.** The cast button in the player bar plays to Chromecast, Google Home / Nest devices and speaker groups. It replaces upstream's DLNA casting, so Sonos and other DLNA-only renderers are not supported.
 - **Less bloat.** Genre browsing, internet radio and the home carousel are removed.
 
 Everything else (MPV and web player backends, scrobbling, lyrics, smart playlist editor for Navidrome) is inherited from upstream.
@@ -43,6 +44,15 @@ Then copy `dist/mac-arm64/Feishin.app` to `/Applications`. The app is unsigned, 
 2. Open the menu > `Manage servers` > `Add server`, and enter the full server URL including protocol and port (e.g. `http://192.168.0.1:4533`).
 
 For Navidrome, tick "Save password" and raise `SessionTimeout` in the Navidrome config (e.g. `72h`).
+
+### Casting
+
+Click the cast icon in the player bar, pick a device, and playback moves to it at the current position. Disconnect to continue on the computer.
+
+- Desktop app only. On macOS, allow the "find devices on your local network" prompt the first time.
+- The device fetches the stream itself, so the server URL must be reachable from it. `localhost` and LAN-only `http` hostnames are rewritten to IP addresses; a LAN-only `https` hostname will not work.
+- MP3, AAC, FLAC, Opus, Vorbis and WAV play directly. Enable transcoding in playback settings for anything else (ALAC, WMA, DSD).
+- No gapless playback or playback speed control on the device.
 
 More docs: [custom themes](docs/CUSTOM_THEMES.md), [settings via environment variables](docs/ENV_SETTINGS.md).
 

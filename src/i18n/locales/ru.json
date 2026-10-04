@@ -1619,53 +1619,5 @@
         "error_oneFileOnly": "Пожалуйста, выберите только один файл",
         "error_readingFile": "Возникла проблема при чтении файла: {{errorMessage}}",
         "mainText": "Перетащите файл сюда"
-    },
-    "dlna": {
-        "castToDevice": "Транслировать на DLNA устройство",
-        "castingToDevice": "Транслирую на {{name}}",
-        "castingToGroup": "Транслирую в группу ({{count}})",
-        "connected": "подключено",
-        "connecting": "Подключение…",
-        "createGroup": "Создать группу",
-        "devices": "DLNA устройства",
-        "disconnect": "Отключить",
-        "disconnectAndContinue": "Отключить и продолжить",
-        "noDevicesFound": "DLNA устройства не найдены",
-        "nowCasting": "Транслирую",
-        "searching": "Поиск устройств…",
-        "shiftDisconnectHint": "Удерживая Shift нажмите \"Отключить\", чтобы продолжить воспроизведение через динамик",
-        "group": {
-            "add": "Добавить",
-            "addSpeaker": "Добавить динамик",
-            "addSpeakers": "Добавить динамики",
-            "addToGroup": "Добавить в группу",
-            "cancel": "Отмена",
-            "connect": "Подключить",
-            "coordinator": "координатор",
-            "failedToAddMessage": "Невозможно добавить {{name}}. Возможно, оно находится в другой системе Sonos.",
-            "failedToAddTitle": "Не удалось добавить динамик",
-            "firstSelectedIsCoordinator": "Первый выбранный = координатор",
-            "noSonosFound": "Устройства Sonos не найдены",
-            "refresh": "Обновить",
-            "remove": "Удалить",
-            "searching": "Поиск…",
-            "selectSpeakers": "Выбрать группу динамиков",
-            "title": "Группа ({{count}} динамиков)"
-        },
-        "speakerProperties": {
-            "treble": "Высокие частоты",
-            "bass": "Бассы",
-            "crossfade": "Плавный переход",
-            "ledState": "Индикатор состояния",
-            "loadFailed": "Не удалось загрузить свойства",
-            "loading": "Загрузка…",
-            "longPressHint": "Длительное нажатие для свойств динамика",
-            "loudness": "Громкость",
-            "touchControls": "Сенсорное управление"
-        },
-        "volume": {
-            "groupControl": "Удерживайте Shift, чтобы изменить громкость отдельных динамиков",
-            "individualControl": "Отпустите Shift, чтобы изменить громкость всех динамиков"
-        }
     }
 }
